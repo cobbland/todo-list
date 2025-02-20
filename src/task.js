@@ -5,6 +5,7 @@ class Task {
     notes = undefined;
     project = undefined;
     tags = undefined;
+    done = undefined;
 
     constructor(title) {
         this.title = title;
@@ -14,4 +15,5 @@ class Task {
 function modifyTask(taskList, taskTitle, key, value) {
     taskList.find((task) => task.title === taskTitle)[key] = value;
 }
+
 export { Task, modifyTask };

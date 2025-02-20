@@ -1,5 +1,6 @@
 import "./styles.css";
 import { modifyTask, Task } from "./task.js";
+import { Project, turnTaskToProject } from "./project.js";
 
 // Assign variables 
 const header = document.querySelector('header');
@@ -17,16 +18,15 @@ if (localStorage.getItem('save')) {
 
 console.log(tasks);
 
-tasks.push(new Task('Wash dishes'));
+tasks.push(new Task('clean house'));
 
-modifyTask(tasks, 'Wash dishes', 'priority', 'high');
+modifyTask(tasks, 'clean house', 'priority', 'high');
 
-tasks.push(new Task('do laundry'));
-
-modifyTask(tasks, 'Wash dishes', 'priority', 'low');
-modifyTask(tasks, 'do laundry', 'priority', 'high');
+turnTaskToProject(tasks, 'clean house');
 
 console.log(tasks);
+
+tasks.push(new Task('do laundry'));
 
 localStorage.setItem('save', JSON.stringify(tasks));
 
