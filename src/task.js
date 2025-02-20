@@ -3,7 +3,7 @@ class Task {
     due = undefined;
     priority = 'normal';
     notes = undefined;
-    project = undefined;
+    // project = undefined;
     tags = undefined;
     done = 'not done';
 

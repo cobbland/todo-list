@@ -1,6 +1,6 @@
 import "./styles.css";
 import { Task, modifyTask, deleteTask } from "./task.js";
-import { Project, turnTaskToProject } from "./project.js";
+import { Project, addTaskToProject, turnTaskToProject } from "./project.js";
 
 // Assign variables 
 const header = document.querySelector('header');
@@ -12,17 +12,18 @@ const footer = document.querySelector('footer');
 const tasks = [];
 
 // Load from local storage
-// if (localStorage.getItem('save')) {
-//     console.log('Loading local storage...')
-//     tasks.concat(localStorage.getItem('save'));
-// } else {
-//     console.log('No local storage.');
-// }
+if (localStorage.getItem('save')) {
+    console.log('Loading local storage...')
+    tasks.concat(localStorage.getItem('save'));
+} else {
+    console.log('No local storage.');
+}
 
 tasks.push(new Task('clean house'));
 modifyTask(tasks, 'clean house', 'priority', 'high');
 modifyTask(tasks, 'clean house', 'due', 'tomorrow');
 tasks.push(new Task('do laundry'));
+modifyTask(tasks, 'do laundry', 'due', 'next week');
 tasks.push(new Task('wash dishes'));
 console.table(tasks);
 
@@ -32,8 +33,11 @@ console.table(tasks);
 deleteTask(tasks, 'wash dishes');
 console.table(tasks);
 
+addTaskToProject(tasks, 'do laundry', 'clean house');
+console.table(tasks);
+
 // Save to local storage
-// localStorage.setItem('save', JSON.stringify(tasks));
+localStorage.setItem('save', JSON.stringify(tasks));
 
 /* Add below after internal logic is working */
 

@@ -7,8 +7,11 @@ class Project extends Task {
     }
 }
 
-function addTasktoProject(taskList, taskTitle, projectTitle) {
-    //
+function addTaskToProject(taskList, taskTitle, projectTitle) {
+    let taskIndex = taskList.indexOf(taskList.find((task) => task.title === taskTitle));
+    let projectIndex = taskList.indexOf(taskList.find((project) => project.title === projectTitle));
+    taskList[projectIndex]['taskList'].unshift(taskList[taskIndex]);
+    taskList.splice(taskIndex, 1);
 }
 
 function turnTaskToProject(taskList, taskTitle) {
@@ -25,4 +28,4 @@ function turnTaskToProject(taskList, taskTitle) {
     taskList.splice(taskIndex, 1);
 }
 
-export { Project, turnTaskToProject };
+export { Project, addTaskToProject, turnTaskToProject };
