@@ -27,7 +27,7 @@ function removeTaskFromProject(taskList, taskTitle, projectTitle){
 }
 
 function turnTaskToProject(taskList, taskTitle) {
-    let taskIndex = taskList.indexOf(taskList.find((task) => task.title === taskTitle));
+    let taskIndex = getTaskIndex(taskList, taskTitle);
     // create project from task and add to taskList
     taskList.unshift(new Project(taskList[taskIndex].title, [taskList[taskIndex]]));
     // copy task properties to project
