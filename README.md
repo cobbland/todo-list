@@ -1,6 +1,6 @@
 # Todo List
 
-A The Odin Project project. The goal is to create a todo list webapp. See the [project assignment page](https://www.theodinproject.com/lessons/node-path-javascript-todo-list) for more details.
+A todo list webapp, built as part of The Odin Project. See the [project assignment page](https://www.theodinproject.com/lessons/node-path-javascript-todo-list) for more details.
 
 ## Inspiration
 
