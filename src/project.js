@@ -1,4 +1,4 @@
-import { Task } from "./task.js";
+import { Task, getTaskIndex } from "./task.js";
 
 class Project extends Task {
     constructor(title, taskList = []) {
@@ -10,8 +10,20 @@ class Project extends Task {
 function addTaskToProject(taskList, taskTitle, projectTitle) {
     let taskIndex = taskList.indexOf(taskList.find((task) => task.title === taskTitle));
     let projectIndex = taskList.indexOf(taskList.find((project) => project.title === projectTitle));
-    taskList[projectIndex]['taskList'].unshift(taskList[taskIndex]);
+    taskList[projectIndex].taskList.unshift(taskList[taskIndex]);
     taskList.splice(taskIndex, 1);
+}
+
+function removeTaskFromProject(taskList, taskTitle, projectTitle){
+    let projectIndex = getTaskIndex(taskList, projectTitle);
+    let taskIndex = getTaskIndex(taskList[projectIndex].taskList, taskTitle);
+    taskList.unshift(new Task(taskList[projectIndex].taskList[taskIndex].title));
+    projectIndex++;
+    let newTaskIndex = 0;
+    for (let key in taskList[projectIndex].taskList[taskIndex]) {
+        taskList[newTaskIndex][key] = taskList[projectIndex].taskList[taskIndex][key];
+    }
+    taskList[projectIndex].taskList.splice(taskIndex, 1);
 }
 
 function turnTaskToProject(taskList, taskTitle) {
@@ -28,4 +40,4 @@ function turnTaskToProject(taskList, taskTitle) {
     taskList.splice(taskIndex, 1);
 }
 
-export { Project, addTaskToProject, turnTaskToProject };
+export { Project, addTaskToProject, removeTaskFromProject, turnTaskToProject };

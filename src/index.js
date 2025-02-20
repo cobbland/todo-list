@@ -1,6 +1,6 @@
 import "./styles.css";
 import { Task, modifyTask, deleteTask } from "./task.js";
-import { Project, addTaskToProject, turnTaskToProject } from "./project.js";
+import { Project, addTaskToProject, removeTaskFromProject, turnTaskToProject } from "./project.js";
 
 // Assign variables 
 const header = document.querySelector('header');
@@ -34,6 +34,9 @@ deleteTask(tasks, 'wash dishes');
 console.table(tasks);
 
 addTaskToProject(tasks, 'do laundry', 'clean house');
+console.table(tasks);
+
+removeTaskFromProject(tasks, 'do laundry', 'clean house');
 console.table(tasks);
 
 // Save to local storage

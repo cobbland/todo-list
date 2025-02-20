@@ -3,7 +3,6 @@ class Task {
     due = undefined;
     priority = 'normal';
     notes = undefined;
-    // project = undefined;
     tags = undefined;
     done = 'not done';
 
@@ -21,4 +20,8 @@ function deleteTask(taskList, taskTitle) {
     taskList.splice(taskIndex, 1);
 }
 
-export { Task, modifyTask, deleteTask };
+function getTaskIndex(taskList, taskTitle) {
+    return taskList.indexOf(taskList.find((task) => task.title === taskTitle));
+}
+
+export { Task, modifyTask, deleteTask, getTaskIndex };
