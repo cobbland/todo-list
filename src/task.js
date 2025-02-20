@@ -1,11 +1,11 @@
 class Task {
     title = undefined;
-    dueDate = undefined;
-    priority = undefined;
+    due = undefined;
+    priority = 'normal';
     notes = undefined;
     project = undefined;
     tags = undefined;
-    done = undefined;
+    done = 'not done';
 
     constructor(title) {
         this.title = title;
