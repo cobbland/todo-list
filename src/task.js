@@ -1,4 +1,5 @@
 class Task {
+    title = undefined;
     dueDate = undefined;
     priority = undefined;
     notes = undefined;
@@ -10,7 +11,7 @@ class Task {
     }
 }
 
-function modifyTask(task, key, value) {
-    task[key] = value;
+function modifyTask(taskList, taskTitle, key, value) {
+    taskList.find((task) => task.title === taskTitle)[key] = value;
 }
 export { Task, modifyTask };
