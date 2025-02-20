@@ -5,4 +5,7 @@ const menu = document.querySelector('.menu');
 const content = document.querySelector('.content');
 const footer = document.querySelector('footer');
 
-content.textContent = "Hello, world!";
+header.textContent = "Header";
+menu.textContent = "Menu";
+content.textContent = "Content";
+footer.textContent = "Footer";

@@ -1,4 +1,60 @@
+:root {
+    --color-light: #FFF8E7;
+    --color-dark: #1C1B19;
+    --gray-dark: #1C1B1988;
+    --gray-light: #1C1B1933;
+    --accent-color-1: #D76500;
+    --accent-color-2: #396E67;
+    --accent-color-3: #D14D41;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    line-height: 1.5; /* This requires customizing the line height for larger text. */
+    background-color: var(--color-light);
+}
+
+img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%; /* Use `max-width: revert;` if an image is meant to overflow */
+}
+
+input, button, textarea, select {
+    font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+    font-family: system-ui;
+}
+
+header {
+    color: var(--color-light);
+    background-color: var(--color-dark);
+}
+
+.menu {
+    color: var(--color-dark);
+    background-color: var(--gray-light);
+}
+
 .content {
-    color: aqua;
-    background-color: blue;
+    color: var(--color-dark)
+}
+
+footer {
+    color: var(--color-light);
+    background-color: var(--color-dark);
 }
