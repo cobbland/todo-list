@@ -30,6 +30,13 @@ function toggleDone(taskList, taskTitle) {
         taskList[taskIndex].done = false;
     } else {
         taskList[taskIndex].done = true;
+        if ('tasks' in taskList[taskIndex]) {
+            for (let task in taskList[taskIndex].tasks) {
+                if (!taskList[taskIndex].tasks[task].done) {
+                    toggleDone(taskList[taskIndex].tasks, taskList[taskIndex].tasks[task].title);
+                }
+            }
+        }
     }
 }
 
