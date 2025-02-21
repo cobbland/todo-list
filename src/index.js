@@ -1,7 +1,7 @@
 import "./styles.css";
 import { Task, modifyTask, deleteTask, getTaskIndex } from "./task.js";
 import { Project, addTaskToProject, removeTaskFromProject, turnTaskToProject } from "./project.js";
-import { addTag } from "./tags.js";
+import { addTag, removeTag } from "./tags.js";
 
 // Assign variables 
 const header = document.querySelector('header');
@@ -25,7 +25,7 @@ modifyTask(tasks, 'clean house', 'priority', 'high');
 modifyTask(tasks, 'clean house', 'due', 'tomorrow');
 tasks.push(new Task('do laundry'));
 modifyTask(tasks, 'do laundry', 'due', 'next week');
-tasks.push(new Task('wash dishes'));
+tasks.push(new Task('find a job'));
 
 turnTaskToProject(tasks, 'clean house');
 
@@ -34,16 +34,17 @@ tasks.push(new Task('make bed'));
 tasks.push(new Task('water plants'));
 addTaskToProject(tasks, 'make bed', 'clean house');
 addTaskToProject(tasks, 'water plants', 'clean house');
+
+
+addTag(tasks, 'clean house', 'personal');
+removeTag(tasks[getTaskIndex(tasks, 'clean house')].tasks, 'make bed', 'personal');
+removeTag(tasks, 'clean house', 'personal');
+
 console.log('TASK LIST');
 console.table(tasks);
 console.log('...');
 console.log('CLEAN HOUSE')
 console.table(tasks[getTaskIndex(tasks, 'clean house')].tasks);
-
-addTag(tasks, 'clean house', 'personal');
-
-console.log('TASK LIST');
-console.table(tasks);
 
 removeTaskFromProject(tasks, 'do laundry', 'clean house');
 
