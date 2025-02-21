@@ -38,7 +38,6 @@ addTaskToProject(tasks, 'water plants', 'clean house');
 
 addTag(tasks, 'clean house', 'personal');
 removeTag(tasks[getTaskIndex(tasks, 'clean house')].tasks, 'make bed', 'personal');
-removeTag(tasks, 'clean house', 'personal');
 
 console.log('TASK LIST');
 console.table(tasks);

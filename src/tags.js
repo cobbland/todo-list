@@ -1,19 +1,19 @@
 import { getTaskIndex } from "./task";
 
-// add tag
 function addTag(taskList, taskTitle, tagTitle) {
     let taskIndex = getTaskIndex(taskList, taskTitle);
-    taskList[taskIndex].tags.unshift(tagTitle);
-    if ('tasks' in taskList[taskIndex]) {
-        for (let task in taskList[taskIndex].tasks) {
-            if (!taskList[taskIndex].tasks[task].tags.includes(tagTitle)) {
-                addTag(taskList[taskIndex].tasks, taskList[taskIndex].tasks[task].title, tagTitle);
+    if (!taskList[taskIndex].tags.includes(tagTitle)) {
+        taskList[taskIndex].tags.unshift(tagTitle);
+        if ('tasks' in taskList[taskIndex]) {
+            for (let task in taskList[taskIndex].tasks) {
+                if (!taskList[taskIndex].tasks[task].tags.includes(tagTitle)) {
+                    addTag(taskList[taskIndex].tasks, taskList[taskIndex].tasks[task].title, tagTitle);
+                }
             }
         }
     }
 }
 
-// remove tag
 function removeTag(taskList, taskTitle, tagTitle) {
     let taskIndex = getTaskIndex(taskList, taskTitle);
     if (taskList[taskIndex].tags.includes(tagTitle)) {
