@@ -2,6 +2,8 @@ import "./styles.css";
 import { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, sortTasks } from "./task.js";
 import { Project, addTaskToProject, removeTaskFromProject } from "./project.js";
 import { populateTasks } from "./tasks-view.js";
+import { populateProjects } from "./projects-view.js";
+import { populateTags } from "./tags-view.js";
 
 // Assign variables 
 const header = document.querySelector('header');
@@ -13,8 +15,6 @@ const content = document.querySelector('.content');
 const contentHeading = document.createElement('h2');
 const taskList = document.createElement('ul');
 const footer = document.querySelector('footer');
-
-contentHeading.innerText = 'Tasks';
 
 content.appendChild(contentHeading);
 content.appendChild(taskList);
@@ -49,7 +49,16 @@ menu.addEventListener('click', (button) => {
     console.log(button.target)
     if (button.target.innerText === 'Tasks') {
         emptyDiv(taskList);
+        contentHeading.innerText = 'Tasks';
         populateTasks(tasks, taskList);
+    } else if (button.target.innerText === 'Projects') {
+        emptyDiv(taskList);
+        contentHeading.innerText = 'Projects';
+        populateProjects(tasks, taskList);
+    }else if (button.target.innerText === 'Tags') {
+        emptyDiv(taskList);
+        contentHeading.innerText = 'Tags';
+        populateTags(tasks, taskList);
     }
 
     if (button.target.innerText === '+') {
@@ -95,6 +104,7 @@ addTaskToProject(tasks, 'eat apple', 'eat');
 tasks.push(new Task('bake bread'));
 addTaskToProject(tasks, 'bake bread', 'eat');
 toggleDone(tasks, 'bake bread');
+addTag(tasks, 'zip pants', 'personal');
 
 sortTasks(tasks);
 console.log('TASK LIST SORTED');

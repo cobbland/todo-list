@@ -20,6 +20,7 @@ html,
 body {
     height: 100%;
     min-height: fit-content;
+    font-size: 1.2em;
 }
 
 body {
@@ -82,11 +83,13 @@ header {
 .content {
     color: var(--color-dark);
     padding: 1rem;
+    width: min(1000px, 95%);
+    align-self: center;
 }
 
 .task {
     display: grid;
-    grid-template-columns: max-content 2fr 1fr 1fr 1fr;
+    grid-template-columns: max-content 5.7fr 0.5fr 1fr 4fr;
     gap: 1rem;
     border-bottom: 1px solid var(--gray-light);
     align-items: center;
