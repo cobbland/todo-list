@@ -34,6 +34,11 @@ toggleDone(tasks, 'make bed');
 tasks.push(new Task('eat apple'));
 tasks.push(new Task('zip pants'));
 addDate(tasks, 'zip pants', '2025-02-22T00:00');
+tasks.push(new Project('eat'));
+addTaskToProject(tasks, 'eat apple', 'eat');
+tasks.push(new Task('bake bread'));
+addTaskToProject(tasks, 'bake bread', 'eat');
+
 
 console.log('TASK LIST');
 console.table(tasks);
@@ -62,18 +67,52 @@ content.appendChild(contentHeading);
 const taskList = document.createElement('ul');
 content.appendChild(taskList);
 
+populateTasks(tasks, taskList);
 
-for (let task in tasks) {
-    const taskItem = document.createElement('li');
-    taskItem.textContent += tasks[task].title;
-    taskList.appendChild(taskItem);
-    if ('tasks' in tasks[task]) {
-        for (let subtask in tasks[task].tasks) {
-            const taskSubItem = document.createElement('li');
-            taskSubItem.textContent += tasks[task].tasks[subtask].title;
-            taskItem.appendChild(taskSubItem);
+function populateTasks(taskList, container) {
+    for (let task in taskList) {
+        const taskItem = document.createElement('li');
+        const taskTitle = document.createElement('span');
+        const taskPriority = document.createElement('span');
+        const taskDue = document.createElement('span');
+        const taskStatus = document.createElement('span');
+    
+        taskTitle.textContent = taskList[task].title;
+    
+        if (taskList[task].priority === 1) {
+            taskPriority.textContent = '🔥';
+        } else if (taskList[task].priority === -1) {
+            taskPriority.textContent = '🧊';
+        } else {
+            taskPriority.textContent = ' ';
+        }
+        
+        if (taskList[task].due === Infinity) {
+            taskDue.textContent = ' ';
+        } else {
+            taskDue.textContent = `${taskList[task].due.getFullYear()}-${taskList[task].due.getMonth()+1}-${taskList[task].due.getDate()}`
+        }
+    
+        if (taskList[task].done === true) {
+            taskStatus.textContent = '☒';
+        } else {
+            taskStatus.textContent = '☐';
+        }
+        
+        container.appendChild(taskItem);
+        taskItem.appendChild(taskStatus);
+        taskItem.appendChild(taskTitle);
+        taskItem.appendChild(taskPriority);
+        taskItem.appendChild(taskDue);
+    
+        taskItem.classList.add('task');
+    
+        if ('tasks' in taskList[task]) {
+            taskItem.classList.add('project');
+            populateTasks(taskList[task].tasks, taskItem);
         }
     }
 }
+
 
 // Add event listener(s) for clicking

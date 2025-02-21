@@ -39,6 +39,11 @@ input, button, textarea, select {
     font: inherit;
 }
 
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
 header {
     color: var(--color-light);
     background-color: var(--color-dark);
@@ -59,6 +64,29 @@ header {
 .content {
     color: var(--color-dark);
     padding: 1rem;
+}
+
+.task {
+    display: flex;
+    gap: 1rem;
+    border-bottom: 1px solid var(--gray-light);
+    align-items: center;
+}
+
+.task:nth-last-child(1) {
+    border-bottom: 0;
+}
+
+.task span:nth-child(1) {
+    font-weight: bold;
+}
+
+.task span:nth-last-child(1) {
+    margin-left: auto;
+}
+
+.project {
+    display: flex;
 }
 
 footer {
