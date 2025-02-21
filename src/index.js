@@ -1,6 +1,6 @@
 import "./styles.css";
 import { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, sortTasks } from "./task.js";
-import { Project, addTaskToProject, removeTaskFromProject, turnTaskToProject, turnProjectToTask } from "./project.js";
+import { Project, addTaskToProject, removeTaskFromProject } from "./project.js";
 
 // Assign variables 
 const header = document.querySelector('header');
@@ -18,6 +18,9 @@ if (localStorage.getItem('save')) {
 } else {
     console.log('No local storage.');
 }
+
+console.log('TASK LIST');
+console.table(tasks);
 
 tasks.push(new Task('clean house'));
 modifyTask(tasks, 'clean house', 'priority', 1);
@@ -38,10 +41,7 @@ tasks.push(new Project('eat'));
 addTaskToProject(tasks, 'eat apple', 'eat');
 tasks.push(new Task('bake bread'));
 addTaskToProject(tasks, 'bake bread', 'eat');
-
-
-console.log('TASK LIST');
-console.table(tasks);
+toggleDone(tasks, 'bake bread');
 
 sortTasks(tasks);
 console.log('TASK LIST SORTED');
@@ -71,45 +71,66 @@ populateTasks(tasks, taskList);
 
 function populateTasks(taskList, container) {
     for (let task in taskList) {
-        const taskItem = document.createElement('li');
-        const taskTitle = document.createElement('span');
-        const taskPriority = document.createElement('span');
-        const taskDue = document.createElement('span');
-        const taskStatus = document.createElement('span');
-    
-        taskTitle.textContent = taskList[task].title;
-    
-        if (taskList[task].priority === 1) {
-            taskPriority.textContent = '🔥';
-        } else if (taskList[task].priority === -1) {
-            taskPriority.textContent = '🧊';
-        } else {
-            taskPriority.textContent = ' ';
-        }
+        const taskIndex = getTaskIndex(taskList, taskList[task].title);
+
+        if (!('tasks' in taskList[taskIndex])) {
+            const taskItem = document.createElement('li');
+            const taskTitle = document.createElement('span');
+            const taskPriority = document.createElement('span');
+            const taskDue = document.createElement('span');
+            const taskStatus = document.createElement('span');
+            const taskProject = document.createElement('span');
+            const taskTags = document.createElement('span');
+
+            taskItem.classList.add('task');
+            taskTitle.classList.add('title');
+            taskPriority.classList.add('priority');
+            taskDue.classList.add('due');
+            taskStatus.classList.add('status');
+            taskProject.classList.add('task-project');
         
-        if (taskList[task].due === Infinity) {
-            taskDue.textContent = ' ';
-        } else {
-            taskDue.textContent = `${taskList[task].due.getFullYear()}-${taskList[task].due.getMonth()+1}-${taskList[task].due.getDate()}`
-        }
-    
-        if (taskList[task].done === true) {
-            taskStatus.textContent = '☒';
-        } else {
-            taskStatus.textContent = '☐';
-        }
+            taskTitle.textContent = taskList[task].title;
         
-        container.appendChild(taskItem);
-        taskItem.appendChild(taskStatus);
-        taskItem.appendChild(taskTitle);
-        taskItem.appendChild(taskPriority);
-        taskItem.appendChild(taskDue);
-    
-        taskItem.classList.add('task');
-    
-        if ('tasks' in taskList[task]) {
-            taskItem.classList.add('project');
-            populateTasks(taskList[task].tasks, taskItem);
+            if (taskList[task].priority === 1) {
+                taskPriority.textContent = ' 🔥';
+            } else if (taskList[task].priority === -1) {
+                taskPriority.textContent = ' 🧊';
+            } else {
+                taskPriority.textContent = ' ';
+            }
+            
+            if (taskList[task].due === Infinity) {
+                taskDue.textContent = ' ';
+            } else {
+                taskDue.textContent = `${taskList[task].due.getFullYear()}-${taskList[task].due.getMonth()+1}-${taskList[task].due.getDate()}`
+            }
+        
+            if (taskList[task].done === true) {
+                taskStatus.textContent = '☒';
+                taskItem.classList.add('done');
+            } else {
+                taskStatus.textContent = '☐';
+            }
+
+            if (taskList[task].project !== undefined) {
+                taskProject.textContent = `${taskList[task].project}`;
+            }
+
+            // Confirm that the below works!!!!
+            if (taskList[task].tags != []) {
+                for (let tag in taskList[task].tags) {
+                    const taskTag = document.createElement('span');
+                    taskTag.textContent = `${tag}`;
+                }
+            }
+            
+            container.appendChild(taskItem);
+            taskItem.appendChild(taskStatus);
+            taskItem.appendChild(taskTitle);
+            taskTitle.appendChild(taskPriority);
+            taskItem.appendChild(taskProject);
+            taskItem.appendChild(taskTags);
+            taskItem.appendChild(taskDue);
         }
     }
 }

@@ -67,7 +67,8 @@ header {
 }
 
 .task {
-    display: flex;
+    display: grid;
+    grid-template-columns: max-content 2fr 1fr 1fr 1fr;
     gap: 1rem;
     border-bottom: 1px solid var(--gray-light);
     align-items: center;
@@ -77,16 +78,24 @@ header {
     border-bottom: 0;
 }
 
-.task span:nth-child(1) {
+.task .title {
     font-weight: bold;
 }
 
-.task span:nth-last-child(1) {
+.task .priority {
+    justify-self: left;
+}
+
+.task .task-project {
+    color: #396E67;
+}
+
+.task .due {
     margin-left: auto;
 }
 
-.project {
-    display: flex;
+.done {
+    opacity: 0.40;
 }
 
 footer {

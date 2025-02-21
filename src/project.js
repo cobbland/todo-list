@@ -11,7 +11,7 @@ function addTaskToProject(taskList, taskTitle, projectTitle) {
     let taskIndex = taskList.indexOf(taskList.find((task) => task.title === taskTitle));
     let projectIndex = taskList.indexOf(taskList.find((project) => project.title === projectTitle));
     taskList[projectIndex].tasks.unshift(taskList[taskIndex]);
-    taskList.splice(taskIndex, 1);
+    taskList[taskIndex].project = taskList[projectIndex].title;
 }
 
 function removeTaskFromProject(taskList, taskTitle, projectTitle){
@@ -26,29 +26,29 @@ function removeTaskFromProject(taskList, taskTitle, projectTitle){
     taskList[projectIndex].tasks.splice(taskIndex, 1);
 }
 
-function turnTaskToProject(taskList, taskTitle) {
-    let taskIndex = getTaskIndex(taskList, taskTitle);
-    // create project from task and add to taskList
-    taskList.unshift(new Project(taskList[taskIndex].title));
-    // copy task properties to project
-    taskIndex++; // because the new project was added to the front of the list
-    let projectIndex = taskList.indexOf(taskList.find((project) => project.title === taskTitle));
-    for (let key in taskList[taskIndex]) {
-        taskList[projectIndex][key] = taskList[taskIndex][key];
-    }
-    // delete task from taskList
-    taskList.splice(taskIndex, 1);
-}
+// function turnTaskToProject(taskList, taskTitle) {
+//     let taskIndex = getTaskIndex(taskList, taskTitle);
+//     // create project from task and add to taskList
+//     taskList.unshift(new Project(taskList[taskIndex].title));
+//     // copy task properties to project
+//     taskIndex++; // because the new project was added to the front of the list
+//     let projectIndex = taskList.indexOf(taskList.find((project) => project.title === taskTitle));
+//     for (let key in taskList[taskIndex]) {
+//         taskList[projectIndex][key] = taskList[taskIndex][key];
+//     }
+//     // delete task from taskList
+//     taskList.splice(taskIndex, 1);
+// }
 
-function turnProjectToTask(taskList, projectTitle) {
-    let projectIndex = getTaskIndex(taskList, projectTitle);
-    if (taskList[projectIndex].tasks.length === 0) {
-        taskList.unshift(new Task(projectTitle))
-        projectIndex++
-        taskList.splice(projectIndex, 1);
-    } else {
-        console.log('Project must first be empty!')
-    }
-}
+// function turnProjectToTask(taskList, projectTitle) {
+//     let projectIndex = getTaskIndex(taskList, projectTitle);
+//     if (taskList[projectIndex].tasks.length === 0) {
+//         taskList.unshift(new Task(projectTitle))
+//         projectIndex++
+//         taskList.splice(projectIndex, 1);
+//     } else {
+//         console.log('Project must first be empty!')
+//     }
+// }
 
-export { Project, addTaskToProject, removeTaskFromProject, turnTaskToProject, turnProjectToTask };
+export { Project, addTaskToProject, removeTaskFromProject };

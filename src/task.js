@@ -3,6 +3,7 @@ class Task {
     due = Infinity; // If a due date is set, it should be in a valid date format
     priority = 0; // Can be `-1` for low, `0` for normal, or `1` for high priority
     notes = undefined; // May have notes
+    project = undefined // May be part of one project
     tags = []; // May have any number of tags
     done = false; // Can be `true` for done or `false` for not done
 
