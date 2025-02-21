@@ -50,5 +50,7 @@ A todo list webapp, built as part of The Odin Project. See the [project assignme
     - [x] test
 - [x] Write task class and functions
 - [x] Write project class and functions
-- [ ] Write tag functions
+- [x] Write tag functions
+- [ ] Add done function (done/not done switch)
+- [ ] Add due functions
 - [ ] ...
