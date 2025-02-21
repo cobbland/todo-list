@@ -3,7 +3,7 @@ class Task {
     due = undefined;
     priority = 'normal';
     notes = undefined;
-    tags = undefined;
+    tags = [];
     done = 'not done';
 
     constructor(title) {

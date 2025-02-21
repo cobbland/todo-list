@@ -48,7 +48,7 @@ A todo list webapp, built as part of The Odin Project. See the [project assignme
     - [x] setup configs
     - [x] make initial files
     - [x] test
-- [x] Write task class and function(s)
-- [x] Write project class and function(s)
-- [ ] Write category class and function(s)
+- [x] Write task class and functions
+- [x] Write project class and functions
+- [ ] Write tag functions
 - [ ] ...

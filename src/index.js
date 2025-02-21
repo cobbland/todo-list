@@ -1,6 +1,7 @@
 import "./styles.css";
 import { Task, modifyTask, deleteTask, getTaskIndex } from "./task.js";
 import { Project, addTaskToProject, removeTaskFromProject, turnTaskToProject } from "./project.js";
+import { addTag } from "./tags.js";
 
 // Assign variables 
 const header = document.querySelector('header');
@@ -28,11 +29,21 @@ tasks.push(new Task('wash dishes'));
 
 turnTaskToProject(tasks, 'clean house');
 
-deleteTask(tasks, 'wash dishes');
-
 addTaskToProject(tasks, 'do laundry', 'clean house');
+tasks.push(new Task('make bed'));
+tasks.push(new Task('water plants'));
+addTaskToProject(tasks, 'make bed', 'clean house');
+addTaskToProject(tasks, 'water plants', 'clean house');
+console.log('TASK LIST');
 console.table(tasks);
-console.table(tasks[getTaskIndex(tasks, 'clean house')].taskList);
+console.log('...');
+console.log('CLEAN HOUSE')
+console.table(tasks[getTaskIndex(tasks, 'clean house')].tasks);
+
+addTag(tasks, 'clean house', 'personal');
+
+console.log('TASK LIST');
+console.table(tasks);
 
 removeTaskFromProject(tasks, 'do laundry', 'clean house');
 

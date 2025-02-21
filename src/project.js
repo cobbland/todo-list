@@ -1,29 +1,29 @@
 import { Task, getTaskIndex } from "./task.js";
 
 class Project extends Task {
-    constructor(title, taskList = []) {
+    constructor(title, tasks = []) {
         super(title);
-        this.taskList = taskList;
+        this.tasks = tasks;
     }
 }
 
 function addTaskToProject(taskList, taskTitle, projectTitle) {
     let taskIndex = taskList.indexOf(taskList.find((task) => task.title === taskTitle));
     let projectIndex = taskList.indexOf(taskList.find((project) => project.title === projectTitle));
-    taskList[projectIndex].taskList.unshift(taskList[taskIndex]);
+    taskList[projectIndex].tasks.unshift(taskList[taskIndex]);
     taskList.splice(taskIndex, 1);
 }
 
 function removeTaskFromProject(taskList, taskTitle, projectTitle){
     let projectIndex = getTaskIndex(taskList, projectTitle);
-    let taskIndex = getTaskIndex(taskList[projectIndex].taskList, taskTitle);
-    taskList.unshift(new Task(taskList[projectIndex].taskList[taskIndex].title));
+    let taskIndex = getTaskIndex(taskList[projectIndex].tasks, taskTitle);
+    taskList.unshift(new Task(taskList[projectIndex].tasks[taskIndex].title));
     projectIndex++;
     let newTaskIndex = 0;
-    for (let key in taskList[projectIndex].taskList[taskIndex]) {
-        taskList[newTaskIndex][key] = taskList[projectIndex].taskList[taskIndex][key];
+    for (let key in taskList[projectIndex].tasks[taskIndex]) {
+        taskList[newTaskIndex][key] = taskList[projectIndex].tasks[taskIndex][key];
     }
-    taskList[projectIndex].taskList.splice(taskIndex, 1);
+    taskList[projectIndex].tasks.splice(taskIndex, 1);
 }
 
 function turnTaskToProject(taskList, taskTitle) {
