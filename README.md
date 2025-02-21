@@ -52,7 +52,7 @@ A todo list webapp, built as part of The Odin Project. See the [project assignme
 - [x] Write project class and functions
 - [x] Write tag functions
 - [x] Add done function (done/not done switch)
-- [ ] Add due functions
+- [x] Add due date functions
 - [ ] ...
 
 ## Things I Learned

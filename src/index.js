@@ -1,5 +1,5 @@
 import "./styles.css";
-import { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, sortTasks } from "./task.js";
+import { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, sortTasks } from "./task.js";
 import { Project, addTaskToProject, removeTaskFromProject, turnTaskToProject, turnProjectToTask } from "./project.js";
 
 // Assign variables 
@@ -21,9 +21,9 @@ if (localStorage.getItem('save')) {
 
 tasks.push(new Task('clean house'));
 modifyTask(tasks, 'clean house', 'priority', 1);
-modifyTask(tasks, 'clean house', 'due', 'tomorrow');
+addDate(tasks, 'clean house', '2026-04-03T00:00');
 tasks.push(new Task('do laundry'));
-modifyTask(tasks, 'do laundry', 'due', 'next week');
+addDate(tasks, 'do laundry', '2025-11-11T00:00');
 modifyTask(tasks, 'do laundry', 'priority', -1);
 tasks.push(new Task('find a job'));
 tasks.push(new Task('make bed'));
@@ -33,6 +33,7 @@ addTag(tasks, 'clean house', 'personal');
 toggleDone(tasks, 'make bed');
 tasks.push(new Task('eat apple'));
 tasks.push(new Task('zip pants'));
+addDate(tasks, 'zip pants', '2025-02-22T00:00');
 
 console.log('TASK LIST');
 console.table(tasks);

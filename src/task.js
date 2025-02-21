@@ -1,6 +1,6 @@
 class Task {
     title = undefined; // Must have a title
-    due = undefined; // If a due date is set, it should be in a valid date format
+    due = Infinity; // If a due date is set, it should be in a valid date format
     priority = 0; // Can be `-1` for low, `0` for normal, or `1` for high priority
     notes = undefined; // May have notes
     tags = []; // May have any number of tags
@@ -69,6 +69,11 @@ function removeTag(taskList, taskTitle, tagTitle) {
     }
 }
 
+function addDate(taskList, taskTitle, newDate) {
+    let taskIndex = getTaskIndex(taskList, taskTitle);
+    taskList[taskIndex].due = new Date(newDate);
+}
+
 function sortTasks(taskList) {
     taskList.sort((a,b) => {
         if (a.done > b.done) {
@@ -76,9 +81,9 @@ function sortTasks(taskList) {
         } else if (a.done < b.done) {
             return -1;
         } else {
-            return b.priority - a.priority || a.title.localeCompare(b.title);
+            return a.due - b.due || b.priority - a.priority || a.title.localeCompare(b.title);
         }
     })
 }
 
-export { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, sortTasks };
+export { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, sortTasks };
