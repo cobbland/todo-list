@@ -13,7 +13,7 @@ A todo list webapp, built as part of The Odin Project. See the [project assignme
 
 - Light & dark mode
 - Mobile first design
-- Tasks, projects, and categories
+- Tasks, projects, and tags
 - Everything is editable
 - Tasks can be upgraded to projects
 - Projects containing only one task can be downgraded to tasks
@@ -25,12 +25,12 @@ A todo list webapp, built as part of The Odin Project. See the [project assignme
 - An unset project due date equals the latest task due date
 - An unset task's due date equals the parent project's due date
 - Tasks and projects can have priorities, with the same inheritance structure as above
-- Tasks and projects can be members of any number of categories, with tasks inheriting from their parent project
-- Tasks within projects are organized by category
-- Tasks can be added to projects and categories at time of creation
+- Tasks and projects can be members of any number of tags, with tasks inheriting from their parent project
+- Tasks within projects are organized by tag
+- Tasks can be added to projects and tags at time of creation
 - If not assigned to a project, a task is part of an invisible default project
 - When a task is turned into a project, it is no longer part of its parent project
-- Tasks created within projects are automatically part of that project (inheriting its due date and categories by default)
+- Tasks created within projects are automatically part of that project (inheriting its due date and tags by default)
 - Everything should be stored locally
  - See [the mdn documentation](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API) and [this freeCodeCamp article](https://www.freecodecamp.org/news/use-local-storage-in-modern-applications/)
 - Consider an export and import function
@@ -38,7 +38,7 @@ A todo list webapp, built as part of The Odin Project. See the [project assignme
 - The menu is organized: 
     - **Tasks** > Today > Upcoming (next 7 days) > All > Done
     - **Projects** > (an expandible list of all projects)
-    - **Categories** > (an expandible list of all categories)
+    - **Tags** > (an expandible list of all tags)
 
 ## Todo (isn't that meta?)
 
@@ -54,3 +54,6 @@ A todo list webapp, built as part of The Odin Project. See the [project assignme
 - [x] Add done function (done/not done switch)
 - [ ] Add due functions
 - [ ] ...
+
+## Things I Learned
+

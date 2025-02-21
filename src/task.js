@@ -1,10 +1,10 @@
 class Task {
-    title = undefined;
-    due = undefined;
-    priority = 'normal';
-    notes = undefined;
-    tags = [];
-    done = false;
+    title = undefined; // Must have a title
+    due = undefined; // If a due date is set, it should be in a valid date format
+    priority = 0; // Can be `-1` for low, `0` for normal, or `1` for high priority
+    notes = undefined; // May have notes
+    tags = []; // May have any number of tags
+    done = false; // Can be `true` for done or `false` for not done
 
     constructor(title) {
         this.title = title;
@@ -69,4 +69,16 @@ function removeTag(taskList, taskTitle, tagTitle) {
     }
 }
 
-export { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag };
+function sortTasks(taskList) {
+    taskList.sort((a,b) => {
+        if (a.done > b.done) {
+            return 1;
+        } else if (a.done < b.done) {
+            return -1;
+        } else {
+            return b.priority - a.priority || a.title.localeCompare(b.title);
+        }
+    })
+}
+
+export { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, sortTasks };
