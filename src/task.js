@@ -17,12 +17,20 @@ function modifyTask(taskList, taskTitle, key, value) {
 }
 
 function deleteTask(taskList, taskTitle) {
-    let taskIndex = taskList.indexOf(taskList.find((task) => task.title === taskTitle));
+    let taskIndex = getTaskIndex(taskList, taskTitle);
+    if (taskIndex === -1) {
+        return;
+    }
     taskList.splice(taskIndex, 1);
+    for (let task in taskList) {
+        if ('tasks' in taskList[task]) {
+            deleteTask(taskList[task].tasks, taskTitle);
+        }
+    }
 }
 
 function getTaskIndex(taskList, taskTitle) {
-    return taskList.indexOf(taskList.find((task) => task.title === taskTitle));
+    return taskList.findIndex((task) => task.title === taskTitle);
 }
 
 function toggleDone(taskList, taskTitle) {
@@ -92,4 +100,22 @@ function sortTasks(taskList) {
     })
 }
 
-export { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, editNote, sortTasks };
+function addTaskToProject(taskList, taskTitle, projectTitle) {
+    let taskIndex = taskList.indexOf(taskList.find((task) => task.title === taskTitle));
+    let projectIndex = taskList.indexOf(taskList.find((project) => project.title === projectTitle));
+    taskList[projectIndex].tasks.unshift(taskList[taskIndex]);
+    taskList[taskIndex].project = taskList[projectIndex].title;
+}
+
+function removeTaskFromProject(taskList, taskTitle, projectTitle){
+    let projectIndex = getTaskIndex(taskList, projectTitle);
+    let taskIndexIn = getTaskIndex(taskList[projectIndex].tasks, taskTitle);
+    let taskIndexOut = getTaskIndex(taskList, taskTitle);
+    console.log(`from removeTaskFromProject...`)
+    console.log(`taskIndexOut: ${taskIndexOut}`);
+    console.log(`${taskList[taskIndexOut].title}`)
+    taskList[taskIndexOut].project = undefined;
+    taskList[projectIndex].tasks.splice(taskIndexIn, 1);
+}
+
+export { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, editNote, sortTasks, addTaskToProject, removeTaskFromProject };

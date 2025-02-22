@@ -7,25 +7,6 @@ class Project extends Task {
     }
 }
 
-function addTaskToProject(taskList, taskTitle, projectTitle) {
-    let taskIndex = taskList.indexOf(taskList.find((task) => task.title === taskTitle));
-    let projectIndex = taskList.indexOf(taskList.find((project) => project.title === projectTitle));
-    taskList[projectIndex].tasks.unshift(taskList[taskIndex]);
-    taskList[taskIndex].project = taskList[projectIndex].title;
-}
-
-function removeTaskFromProject(taskList, taskTitle, projectTitle){
-    let projectIndex = getTaskIndex(taskList, projectTitle);
-    let taskIndex = getTaskIndex(taskList[projectIndex].tasks, taskTitle);
-    taskList.unshift(new Task(taskList[projectIndex].tasks[taskIndex].title));
-    projectIndex++;
-    let newTaskIndex = 0;
-    for (let key in taskList[projectIndex].tasks[taskIndex]) {
-        taskList[newTaskIndex][key] = taskList[projectIndex].tasks[taskIndex][key];
-    }
-    taskList[projectIndex].tasks.splice(taskIndex, 1);
-}
-
 function getProjectList(taskList) {
     const projectArray = [];
     for (let task in taskList) {
@@ -61,4 +42,4 @@ function getProjectList(taskList) {
 //     }
 // }
 
-export { Project, addTaskToProject, removeTaskFromProject, getProjectList };
+export { Project, getProjectList };

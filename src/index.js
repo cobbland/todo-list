@@ -1,7 +1,7 @@
 import "./styles.css";
-import { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, editNote, sortTasks } from "./task.js";
-import { Project, addTaskToProject, removeTaskFromProject, getProjectList } from "./project.js";
-import { populateTasks, expandTask, deleteTaskDOM } from "./tasks-view.js";
+import { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, editNote, sortTasks, addTaskToProject, removeTaskFromProject } from "./task.js";
+import { Project, getProjectList } from "./project.js";
+import { populateTasksFiltered, noProjects, justProjects, populateTasks, expandTask, deleteTaskDOM } from "./tasks-view.js";
 import { populateProjects } from "./projects-view.js";
 import { populateTags } from "./tags-view.js";
 
@@ -51,10 +51,10 @@ function populate(tasks, taskList) {
     emptyDiv(taskList);
     if (currentPage === 'Tasks') {
         contentHeading.innerText = 'Tasks';
-        populateTasks(tasks, taskList);
+        populateTasksFiltered(tasks, taskList, noProjects);
     } else if (currentPage === 'Projects') {
         contentHeading.innerText = 'Projects';
-        populateProjects(tasks, taskList);
+        populateTasksFiltered(tasks, taskList, justProjects);
     } else if (currentPage === 'Tags') {
         contentHeading.innerText = 'Tags';
         populateTags(tasks, taskList)
@@ -68,9 +68,9 @@ menu.addEventListener('click', (button) => {
         sortTasks(tasks);
         populate(tasks, taskList);
     } else if (button.target.innerText === 'Projects') {
-        // currentPage = 'Projects';
-        // sortTasks(tasks);
-        // populate(tasks, taskList);
+        currentPage = 'Projects';
+        sortTasks(tasks);
+        populate(tasks, taskList);
     }else if (button.target.innerText === 'Tags') {
         // currentPage = 'Tags';
         // sortTasks(tasks);
@@ -99,6 +99,8 @@ menu.addEventListener('click', (button) => {
             projectPicker.appendChild(projectOption);
         }
         dialog.showModal();
+    } else if (button.target.innerText === 'Log Tasks') {
+        console.table(tasks);
     }
 })
 

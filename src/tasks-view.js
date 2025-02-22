@@ -1,10 +1,23 @@
 import { getTaskIndex } from "./task";
 
+function populateTasksFiltered(taskList, container, filterFunction) {
+    const filteredTaskList = taskList.filter(filterFunction)
+    populateTasks(filteredTaskList, container);
+}
+
+function noProjects(task) {
+    return !('tasks' in task);
+}
+
+function justProjects(task) {
+    return ('tasks' in task);
+}
+
 function populateTasks(taskList, container) {
     for (let task in taskList) {
         const taskIndex = getTaskIndex(taskList, taskList[task].title);
 
-        if (!('tasks' in taskList[taskIndex])) {
+        // if (!('tasks' in taskList[taskIndex])) {
             const taskItem = document.createElement('li');
             const taskTitle = document.createElement('span');
             const taskPriority = document.createElement('span');
@@ -110,7 +123,7 @@ function populateTasks(taskList, container) {
             taskControls.appendChild(taskEdit);
             taskControls.appendChild(taskDelete);
             taskItem.appendChild(taskControls);
-        }
+        // }
     }
 }
 
@@ -140,4 +153,4 @@ function deleteTaskDOM(taskListItem) {
     taskListItem.setAttribute('deleted', 'true');
 }
 
-export { populateTasks, expandTask, deleteTaskDOM };
+export { populateTasksFiltered, noProjects, justProjects, populateTasks, expandTask, deleteTaskDOM };
