@@ -2,7 +2,7 @@ class Task {
     title = undefined; // Must have a title
     due = Infinity; // If a due date is set, it should be in a valid date format
     priority = 0; // Can be `-1` for low, `0` for normal, or `1` for high priority
-    notes = undefined; // May have notes
+    notes = ''; // May have notes
     project = undefined // May be part of one project
     tags = []; // May have any number of tags
     done = false; // Can be `true` for done or `false` for not done
@@ -75,6 +75,11 @@ function addDate(taskList, taskTitle, newDate) {
     taskList[taskIndex].due = new Date(newDate);
 }
 
+function editNote(taskList, taskTitle, note) {
+    const taskIndex = getTaskIndex(taskList, taskTitle);
+    taskList[taskIndex].notes = note;
+}
+
 function sortTasks(taskList) {
     taskList.sort((a,b) => {
         if (a.done > b.done) {
@@ -87,4 +92,4 @@ function sortTasks(taskList) {
     })
 }
 
-export { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, sortTasks };
+export { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, editNote, sortTasks };

@@ -1,5 +1,5 @@
 import "./styles.css";
-import { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, sortTasks } from "./task.js";
+import { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, editNote, sortTasks } from "./task.js";
 import { Project, addTaskToProject, removeTaskFromProject } from "./project.js";
 import { populateTasks, expandTask } from "./tasks-view.js";
 import { populateProjects } from "./projects-view.js";
@@ -132,6 +132,8 @@ toggleDone(tasks, 'bake bread');
 addTag(tasks, 'zip pants', 'personal');
 addTag(tasks, 'zip pants', 'clothing');
 addDate(tasks, 'water plants', '2025-02-26T00:00')
+
+editNote(tasks, 'zip pants', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore, molestiae vel consequuntur harum nobis facilis corrupti neque alias vero commodi asperiores ullam, fugit adipisci illo perferendis fuga enim voluptatem natus!');
 
 sortTasks(tasks);
 console.log('TASK LIST SORTED');

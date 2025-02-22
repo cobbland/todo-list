@@ -13,6 +13,8 @@ function populateTasks(taskList, container) {
             const taskStatus = document.createElement('span');
             const taskProject = document.createElement('span');
             const taskTags = document.createElement('span');
+            const taskEdit = document.createElement('span');
+            const taskNotes = document.createElement('p');
 
             taskItem.classList.add('task');
             taskItem.id = taskList[task].title;
@@ -23,12 +25,18 @@ function populateTasks(taskList, container) {
             taskStatus.classList.add('status');
             taskProject.classList.add('task-project');
             taskTags.classList.add('tags');
+            taskEdit.classList.add('edit');
+            taskNotes.classList.add('notes')
 
             taskProject.style.display = 'none';
             taskTags.style.display = 'none';
             taskDueExact.style.display = 'none';
+            taskEdit.style.display = 'none';
+            taskNotes.style.display = 'none';
         
             taskTitle.textContent = taskList[task].title;
+            taskEdit.textContent = '✒️';
+            taskNotes.textContent = taskList[task].notes;
         
             if (taskList[task].priority === 1) {
                 taskPriority.textContent = ' 🔥';
@@ -73,7 +81,6 @@ function populateTasks(taskList, container) {
                 taskProject.setAttribute('project', taskList[task].project);
             }
 
-            // Confirm that the below works!!!!
             if (taskList[task].tags.length > 0) {
                 for (let tag in taskList[task].tags) {
                     const taskTag = document.createElement('li');
@@ -90,26 +97,34 @@ function populateTasks(taskList, container) {
             taskItem.appendChild(taskTitle);
             taskTitle.appendChild(taskPriority);
             taskItem.appendChild(taskDue);
+            taskItem.appendChild(taskEdit);
             taskItem.appendChild(taskProject);
             taskItem.appendChild(taskTags);
             taskItem.appendChild(taskDueExact);
+            taskItem.appendChild(taskNotes);
         }
     }
 }
 
 function expandTask(taskListItem) {
+    const taskEdit = taskListItem.querySelector('.edit');
     const taskProject = taskListItem.querySelector('.task-project');
     const taskTags = taskListItem.querySelector('.tags');
-    const taskExactDue = taskListItem.querySelector('.exact-due')
+    const taskExactDue = taskListItem.querySelector('.exact-due');
+    const taskNotes = taskListItem.querySelector('.notes');
 
     if (taskProject.style.display == 'none') {
+        taskEdit.style.display = 'inline';
         taskProject.style.display = 'inline';
         taskTags.style.display = 'flex';
         taskExactDue.style.display = 'inline';
+        taskNotes.style.display = 'block';
     } else {
+        taskEdit.style.display = 'none';
         taskProject.style.display = 'none';
         taskTags.style.display = 'none';
         taskExactDue.style.display = 'none';
+        taskNotes.style.display = 'none';
     }
 
     
