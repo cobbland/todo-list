@@ -1,7 +1,7 @@
 import "./styles.css";
 import { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, editNote, sortTasks } from "./task.js";
 import { Project, addTaskToProject, removeTaskFromProject } from "./project.js";
-import { populateTasks, expandTask } from "./tasks-view.js";
+import { populateTasks, expandTask, deleteTaskDOM } from "./tasks-view.js";
 import { populateProjects } from "./projects-view.js";
 import { populateTags } from "./tags-view.js";
 
@@ -32,15 +32,13 @@ if (localStorage.getItem('save')) {
 }
 
 // Display tasks
-
-populateTasks(tasks, taskList);
 currentPage = 'Tasks';
+populate(tasks, taskList);
 
 // Save to local storage
 localStorage.setItem('save', JSON.stringify(tasks));
 
 // Add content to DOM via variables and functions
-
 function emptyDiv(div) {
     while (div.firstChild){
         div.firstChild.remove();
@@ -62,7 +60,6 @@ function populate(tasks, taskList) {
 }
 
 // Add event listener(s) for clicking
-
 menu.addEventListener('click', (button) => {
     console.log(button.target)
     if (button.target.innerText === 'Tasks') {
@@ -93,19 +90,28 @@ menu.addEventListener('click', (button) => {
 })
 
 taskList.addEventListener('click', (pointer) => {
-    if (pointer.target.classList == 'status') {
-        let targetTask = pointer.target.closest('.task')
-        toggleDone(tasks, targetTask.id);
-        populate(tasks, taskList);
-    } if (pointer.target.classList[0] == 'title') {
-        let targetTask = pointer.target.closest('.task');
-        console.log(pointer.target.closest('.task'));
+    let targetTask = pointer.target.closest('.task')
+    if (targetTask.getAttribute('deleted')) {
+    } else {
+        if (pointer.target.classList[0] == 'status') {
+            toggleDone(tasks, targetTask.id);
+            populate(tasks, taskList);
+        } if (pointer.target.classList[0] == 'delete') {
+            deleteTask(tasks, targetTask.id);
+            deleteTaskDOM(targetTask);
+        }
+    }
+
+    if (pointer.target.classList[0] == 'title') {
         expandTask(targetTask);
     }
 })
 
-// Testing down here
 
+
+
+
+// Testing down here
 console.log('TASK LIST');
 console.table(tasks);
 
@@ -132,6 +138,8 @@ toggleDone(tasks, 'bake bread');
 addTag(tasks, 'zip pants', 'personal');
 addTag(tasks, 'zip pants', 'clothing');
 addDate(tasks, 'water plants', '2025-02-26T00:00')
+tasks.push(new Project('Get myself together'));
+addTaskToProject(tasks, 'zip pants', 'Get myself together')
 
 editNote(tasks, 'zip pants', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore, molestiae vel consequuntur harum nobis facilis corrupti neque alias vero commodi asperiores ullam, fugit adipisci illo perferendis fuga enim voluptatem natus!');
 

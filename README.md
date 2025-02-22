@@ -53,6 +53,7 @@ A todo list webapp, built as part of The Odin Project. See the [project assignme
 - [x] Add eventListener and functions to populate DOM with tasks
 - [x] Make checking and unchecking tasks work
 - [x] Make expanding tasks work
+- [x] Add delete button
 - [ ] Add adding tasks from button
 - [ ] ...
 

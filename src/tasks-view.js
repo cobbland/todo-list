@@ -15,6 +15,8 @@ function populateTasks(taskList, container) {
             const taskTags = document.createElement('span');
             const taskEdit = document.createElement('span');
             const taskNotes = document.createElement('p');
+            const taskDelete = document.createElement('span');
+            const taskControls = document.createElement('div');
 
             taskItem.classList.add('task');
             taskItem.id = taskList[task].title;
@@ -26,23 +28,24 @@ function populateTasks(taskList, container) {
             taskProject.classList.add('task-project');
             taskTags.classList.add('tags');
             taskEdit.classList.add('edit');
-            taskNotes.classList.add('notes')
+            taskNotes.classList.add('notes');
+            taskDelete.classList.add('delete');
+            taskControls.classList.add('task-controls');
 
             taskProject.style.display = 'none';
             taskTags.style.display = 'none';
             taskDueExact.style.display = 'none';
-            taskEdit.style.display = 'none';
             taskNotes.style.display = 'none';
+            taskControls.style.display = 'none';
         
             taskTitle.textContent = taskList[task].title;
             taskEdit.textContent = '✒️';
             taskNotes.textContent = taskList[task].notes;
+            taskDelete.textContent = '🗑️'
         
             if (taskList[task].priority === 1) {
-                taskPriority.textContent = ' 🔥';
                 taskItem.setAttribute('priority', 'high')
             } else if (taskList[task].priority === -1) {
-                taskPriority.textContent = ' 🧊';
                 taskItem.setAttribute('priority', 'low')
             } else {
                 taskPriority.textContent = ' ';
@@ -97,37 +100,41 @@ function populateTasks(taskList, container) {
             taskItem.appendChild(taskTitle);
             taskTitle.appendChild(taskPriority);
             taskItem.appendChild(taskDue);
-            taskItem.appendChild(taskEdit);
             taskItem.appendChild(taskProject);
             taskItem.appendChild(taskTags);
             taskItem.appendChild(taskDueExact);
             taskItem.appendChild(taskNotes);
+            taskControls.appendChild(taskEdit);
+            taskControls.appendChild(taskDelete);
+            taskItem.appendChild(taskControls);
         }
     }
 }
 
 function expandTask(taskListItem) {
-    const taskEdit = taskListItem.querySelector('.edit');
     const taskProject = taskListItem.querySelector('.task-project');
     const taskTags = taskListItem.querySelector('.tags');
     const taskExactDue = taskListItem.querySelector('.exact-due');
     const taskNotes = taskListItem.querySelector('.notes');
+    const taskControls = taskListItem.querySelector('.task-controls');
 
-    if (taskProject.style.display == 'none') {
-        taskEdit.style.display = 'inline';
-        taskProject.style.display = 'inline';
-        taskTags.style.display = 'flex';
-        taskExactDue.style.display = 'inline';
-        taskNotes.style.display = 'block';
-    } else {
-        taskEdit.style.display = 'none';
+    if (taskProject.style.display == 'inline') {
         taskProject.style.display = 'none';
         taskTags.style.display = 'none';
         taskExactDue.style.display = 'none';
         taskNotes.style.display = 'none';
+        taskControls.style.display = 'none';
+    } else {
+        taskProject.style.display = 'inline';
+        taskTags.style.display = 'flex';
+        taskExactDue.style.display = 'inline';
+        taskNotes.style.display = 'block';
+        taskControls.style.display = 'flex';
     }
-
-    
 }
 
-export { populateTasks, expandTask };
+function deleteTaskDOM(taskListItem) {
+    taskListItem.setAttribute('deleted', 'true');
+}
+
+export { populateTasks, expandTask, deleteTaskDOM };
