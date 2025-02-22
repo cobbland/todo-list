@@ -1,6 +1,6 @@
 import "./styles.css";
 import { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, editNote, sortTasks } from "./task.js";
-import { Project, addTaskToProject, removeTaskFromProject } from "./project.js";
+import { Project, addTaskToProject, removeTaskFromProject, getProjectList } from "./project.js";
 import { populateTasks, expandTask, deleteTaskDOM } from "./tasks-view.js";
 import { populateProjects } from "./projects-view.js";
 import { populateTags } from "./tags-view.js";
@@ -15,6 +15,8 @@ const content = document.querySelector('.content');
 const contentHeading = document.createElement('h2');
 const taskList = document.createElement('ul');
 const footer = document.querySelector('footer');
+const dialog = document.querySelector('dialog');
+const newTaskForm = document.querySelector('#add-task-form');
 let currentPage = '';
 
 content.appendChild(contentHeading);
@@ -61,7 +63,6 @@ function populate(tasks, taskList) {
 
 // Add event listener(s) for clicking
 menu.addEventListener('click', (button) => {
-    console.log(button.target)
     if (button.target.innerText === 'Tasks') {
         currentPage = 'Tasks';
         sortTasks(tasks);
@@ -87,6 +88,50 @@ menu.addEventListener('click', (button) => {
         newProject.style.display = 'none';
         newTag.style.display = 'none';
     }
+
+    if (button.target.innerText === 'New Task') {
+        newTaskForm.parentElement.style.display = 'block';
+        const projectPicker = document.querySelector('#task-project');
+        const projectOptions = getProjectList(tasks);
+        for (let project in projectOptions){
+            const projectOption = document.createElement('option');
+            projectOption.textContent = projectOptions[project];
+            projectPicker.appendChild(projectOption);
+        }
+        dialog.showModal();
+    }
+})
+
+newTaskForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const taskTitle = newTaskForm['task-title'].value;
+    const taskDue = newTaskForm['task-due'].value;
+    const taskPriority = newTaskForm['task-priority'].value;
+    const taskProject = newTaskForm['task-project'].value;
+    let taskTags = newTaskForm['task-tags'].value;
+    const taskNotes= newTaskForm['task-notes'].value;
+
+    tasks.push(new Task(taskTitle));
+    if (taskDue.length > 0){
+        addDate(tasks, taskTitle, `${taskDue}T00:00`);
+    }
+    modifyTask(tasks, taskTitle, 'priority', +taskPriority);
+    if (taskProject.length > 0) {
+        addTaskToProject(tasks, taskTitle, taskProject);
+    }
+    if (taskTags.length > 0) {
+        taskTags = taskTags.split(' ');
+        for (let tag in taskTags) {
+            addTag(tasks, taskTitle, taskTags[tag]);
+        }
+    }
+    editNote(tasks, taskTitle, taskNotes);
+
+    sortTasks(tasks);
+    populate(tasks, taskList);
+    newTaskForm.reset();
+    dialog.close();
+    newTaskForm.parentElement.style.display = 'none';
 })
 
 taskList.addEventListener('click', (pointer) => {

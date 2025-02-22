@@ -58,8 +58,11 @@ function populateTasks(taskList, container) {
                 const today = new Date();
                 const oneWeek = new Date();
                 oneWeek.setDate(today.getDate() + 7);
-                if (taskList[task].due.setHours(0,0,0,0) == today.setHours(0,0,0,0)) {
-                    taskDue.textContent = 'Now';
+                if (taskList[task].due.setHours(0,0,0,0) < today.setHours(0,0,0,0)) {
+                    taskDue.textContent = 'Late!';
+                    taskDue.classList.add('late');
+                } else if (taskList[task].due.setHours(0,0,0,0) == today.setHours(0,0,0,0)) {
+                    taskDue.textContent = 'Today';
                     taskDue.classList.add('today');
                 } else if (taskList[task].due.setHours(0,0,0,0) <= oneWeek.setHours(0,0,0,0)) {
                     taskDue.textContent = 'Soon';

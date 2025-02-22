@@ -54,7 +54,7 @@ A todo list webapp, built as part of The Odin Project. See the [project assignme
 - [x] Make checking and unchecking tasks work
 - [x] Make expanding tasks work
 - [x] Add delete button
-- [ ] Add adding tasks from button
+- [x] Add adding tasks from button
 - [ ] ...
 
 ## Things I Learned

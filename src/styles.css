@@ -209,3 +209,29 @@ a:visited {
     text-decoration: none;
     color: var(--accent-color-1);
 }
+
+dialog {
+    margin: auto;
+    border: none;
+    border-radius: 5px;
+}
+
+dialog::backdrop {
+    backdrop-filter: blur(10px);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    padding: 0.5em;
+}
+
+form div {
+    display: flex;
+    flex-direction: column;
+}
+
+#add-task {
+    margin: auto;
+}

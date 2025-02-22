@@ -26,6 +26,16 @@ function removeTaskFromProject(taskList, taskTitle, projectTitle){
     taskList[projectIndex].tasks.splice(taskIndex, 1);
 }
 
+function getProjectList(taskList) {
+    const projectArray = [];
+    for (let task in taskList) {
+        if ('tasks' in taskList[task]) {
+            projectArray.push(taskList[task].title);
+        }
+    }
+    return projectArray;
+}
+
 // function turnTaskToProject(taskList, taskTitle) {
 //     let taskIndex = getTaskIndex(taskList, taskTitle);
 //     // create project from task and add to taskList
@@ -51,4 +61,4 @@ function removeTaskFromProject(taskList, taskTitle, projectTitle){
 //     }
 // }
 
-export { Project, addTaskToProject, removeTaskFromProject };
+export { Project, addTaskToProject, removeTaskFromProject, getProjectList };

@@ -42,6 +42,46 @@
         <a href="https://github.com/cobbland"><img src="./github-mark.svg" alt="GitHub Invertocat logo"></a>
 
     </footer>
+
+    <dialog>
+
+        <div id="add-task" style="display: none;">
+            <form action="" id="add-task-form">
+                <div>
+                    <label for="task-title">Task</label>
+                    <input type="text" name="task-title" id="task-title" required autofocus>
+                </div>
+                <div>
+                    <label for="task-due">Due</label>
+                    <input type="date" name="task-due" id="task-due">
+                </div>
+                <div>
+                    <label for="task-priority">Priority</label>
+                    <select name="task-priority" id="task-priority">
+                        <option value="-1">Low</option>
+                        <option value="0" selected>Normal</option>
+                        <option value="1">High</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="task-project">Project</label>
+                    <select name="task-project" id="task-project">
+                        <option value="" selected></option>
+                    </select>
+                </div>
+                <div>
+                    <label for="task-tags">Tags (Separated by spaces)</label>
+                    <input type="text" name="task-tags" id="task-tags" default=""> <!-- separate by space -->
+                </div>
+                <div>
+                    <label for="task-notes">Notes</label>
+                    <textarea name="task-notes" id="task-notes"></textarea>
+                </div>
+                <button type="submit">Add Task</button>
+            </form>
+        </div>
+
+    </dialog>
     
 </body>
 </html>
