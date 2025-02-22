@@ -34,6 +34,80 @@
 
     </div>
 
+    <div id="add-task" style="display: none;">
+        <h2>New Task</h2>
+        <form action="" id="add-task-form">
+            <div>
+                <label for="task-title">Task</label>
+                <input type="text" name="task-title" id="task-title" required autofocus>
+            </div>
+            <div>
+                <label for="task-due">Due</label>
+                <input type="date" name="task-due" id="task-due">
+            </div>
+            <div>
+                <label for="task-priority">Priority</label>
+                <select name="task-priority" id="task-priority">
+                    <option value="-1">Low</option>
+                    <option value="0" selected>Normal</option>
+                    <option value="1">High</option>
+                </select>
+            </div>
+            <div>
+                <label for="task-project">Project</label>
+                <select name="task-project" id="task-project">
+                    <option value="" selected></option>
+                </select>
+            </div>
+            <div>
+                <label for="task-tags">Tags (Separated by spaces)</label>
+                <input type="text" name="task-tags" id="task-tags" default=""> <!-- separate by space -->
+            </div>
+            <div>
+                <label for="task-notes">Notes</label>
+                <textarea name="task-notes" id="task-notes"></textarea>
+            </div>
+            <button type="submit">Add Task</button>
+        </form>
+    </div>
+
+    <div id="add-project" style="display: none;">
+        <h2>New Project</h2>
+        <form action="" id="add-project-form">
+            <div>
+                <label for="project-title">Project</label>
+                <input type="text" name="project-title" id="project-title" required autofocus>
+            </div>
+            <div>
+                <label for="project-due">Due</label>
+                <input type="date" name="project-due" id="project-due">
+            </div>
+            <div>
+                <label for="project-priority">Priority</label>
+                <select name="project-priority" id="project-priority">
+                    <option value="-1">Low</option>
+                    <option value="0" selected>Normal</option>
+                    <option value="1">High</option>
+                </select>
+            </div>
+            <div>
+                <label for="project-project">Project (Yes, projects can be part of other projects)</label>
+                <select name="project-project" id="project-project">
+                    <option value="" selected></option>
+                </select>
+            </div>
+            <div>
+                <label for="project-tags">Tags (Separated by spaces)</label>
+                <input type="text" name="project-tags" id="project-tags" default=""> <!-- separate by space -->
+            </div>
+            <div>
+                <label for="project-notes">Notes</label>
+                <textarea name="project-notes" id="project-notes"></textarea>
+            </div>
+            <button type="submit">Add Project</button>
+        </form>
+    </div>
+
     <footer>
 
         <div class="copyright">
@@ -42,46 +116,6 @@
         <a href="https://github.com/cobbland"><img src="./github-mark.svg" alt="GitHub Invertocat logo"></a>
 
     </footer>
-
-    <dialog>
-
-        <div id="add-task" style="display: none;">
-            <form action="" id="add-task-form">
-                <div>
-                    <label for="task-title">Task</label>
-                    <input type="text" name="task-title" id="task-title" required autofocus>
-                </div>
-                <div>
-                    <label for="task-due">Due</label>
-                    <input type="date" name="task-due" id="task-due">
-                </div>
-                <div>
-                    <label for="task-priority">Priority</label>
-                    <select name="task-priority" id="task-priority">
-                        <option value="-1">Low</option>
-                        <option value="0" selected>Normal</option>
-                        <option value="1">High</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="task-project">Project</label>
-                    <select name="task-project" id="task-project">
-                        <option value="" selected></option>
-                    </select>
-                </div>
-                <div>
-                    <label for="task-tags">Tags (Separated by spaces)</label>
-                    <input type="text" name="task-tags" id="task-tags" default=""> <!-- separate by space -->
-                </div>
-                <div>
-                    <label for="task-notes">Notes</label>
-                    <textarea name="task-notes" id="task-notes"></textarea>
-                </div>
-                <button type="submit">Add Task</button>
-            </form>
-        </div>
-
-    </dialog>
     
 </body>
 </html>

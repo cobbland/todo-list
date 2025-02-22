@@ -15,8 +15,8 @@ const content = document.querySelector('.content');
 const contentHeading = document.createElement('h2');
 const taskList = document.createElement('ul');
 const footer = document.querySelector('footer');
-const dialog = document.querySelector('dialog');
 const newTaskForm = document.querySelector('#add-task-form');
+const newProjectForm = document.querySelector('#add-project-form')
 let currentPage = '';
 
 content.appendChild(contentHeading);
@@ -49,6 +49,9 @@ function emptyDiv(div) {
 
 function populate(tasks, taskList) {
     emptyDiv(taskList);
+    newProjectForm.parentElement.style.display = 'none';
+    newTaskForm.parentElement.style.display = 'none';
+    content.style.display = 'block';
     if (currentPage === 'Tasks') {
         contentHeading.innerText = 'Tasks';
         populateTasksFiltered(tasks, taskList, noProjects);
@@ -90,6 +93,8 @@ menu.addEventListener('click', (button) => {
     }
 
     if (button.target.innerText === 'New Task') {
+        content.style.display = 'none';
+        newProjectForm.parentElement.style.display = 'none';
         newTaskForm.parentElement.style.display = 'block';
         const projectPicker = document.querySelector('#task-project');
         const projectOptions = getProjectList(tasks);
@@ -98,7 +103,17 @@ menu.addEventListener('click', (button) => {
             projectOption.textContent = projectOptions[project];
             projectPicker.appendChild(projectOption);
         }
-        dialog.showModal();
+    } else if (button.target.innerText === 'New Project') {
+        content.style.display = 'none';
+        newTaskForm.parentElement.style.display = 'none';
+        newProjectForm.parentElement.style.display = 'block';
+        const projectPicker = document.querySelector('#project-project');
+        const projectOptions = getProjectList(tasks);
+        for (let project in projectOptions){
+            const projectOption = document.createElement('option');
+            projectOption.textContent = projectOptions[project];
+            projectPicker.appendChild(projectOption);
+        }
     } else if (button.target.innerText === 'Log Tasks') {
         console.table(tasks);
     }
@@ -132,8 +147,38 @@ newTaskForm.addEventListener('submit', (event) => {
     sortTasks(tasks);
     populate(tasks, taskList);
     newTaskForm.reset();
-    dialog.close();
     newTaskForm.parentElement.style.display = 'none';
+})
+
+newProjectForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const projectTitle = newProjectForm['project-title'].value;
+    const projectDue = newProjectForm['project-due'].value;
+    const projectPriority = newProjectForm['project-priority'].value;
+    const projectProject = newProjectForm['project-project'].value;
+    let projectTags = newProjectForm['project-tags'].value;
+    const projectNotes= newProjectForm['project-notes'].value;
+
+    tasks.push(new Project(projectTitle));
+    if (projectDue.length > 0){
+        addDate(tasks, projectTitle, `${projectDue}T00:00`);
+    }
+    modifyTask(tasks, projectTitle, 'priority', +projectPriority);
+    if (projectProject.length > 0) {
+        addTaskToProject(tasks, projectTitle, projectProject);
+    }
+    if (projectTags.length > 0) {
+        projectTags = projectTags.split(' ');
+        for (let tag in projectTags) {
+            addTag(tasks, projectTitle, projectTags[tag]);
+        }
+    }
+    editNote(tasks, projectTitle, projectNotes);
+
+    sortTasks(tasks);
+    populate(tasks, taskList);
+    newProjectForm.reset();
+    newProjectForm.parentElement.style.display = 'none';
 })
 
 taskList.addEventListener('click', (pointer) => {

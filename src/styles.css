@@ -81,7 +81,9 @@ header {
     display: none;
 }
 
-.content {
+.content,
+#add-task,
+#add-project {
     padding: 1rem;
     width: min(1000px, 98%);
     align-self: center;
@@ -210,21 +212,10 @@ a:visited {
     color: var(--accent-color-1);
 }
 
-dialog {
-    margin: auto;
-    border: none;
-    border-radius: 5px;
-}
-
-dialog::backdrop {
-    backdrop-filter: blur(10px);
-}
-
 form {
     display: flex;
     flex-direction: column;
     gap: 0.5em;
-    padding: 0.5em;
 }
 
 form div {
@@ -232,6 +223,7 @@ form div {
     flex-direction: column;
 }
 
-#add-task {
-    margin: auto;
+form button {
+    width: max-content;
+    margin-left: auto;
 }
