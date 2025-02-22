@@ -21,6 +21,13 @@ function deleteTask(taskList, taskTitle) {
     if (taskIndex === -1) {
         return;
     }
+    if ('tasks' in taskList[taskIndex]) {
+        for (let task in taskList) {
+            if (taskList[task].project === taskTitle) {
+                modifyTask(taskList, taskList[task].title, 'project', undefined);
+            }
+        }
+    }
     taskList.splice(taskIndex, 1);
     for (let task in taskList) {
         if ('tasks' in taskList[task]) {

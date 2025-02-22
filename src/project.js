@@ -1,4 +1,4 @@
-import { Task, getTaskIndex } from "./task.js";
+import { Task } from "./task.js";
 
 class Project extends Task {
     constructor(title, tasks = []) {
