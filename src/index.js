@@ -1,7 +1,7 @@
 import "./styles.css";
 import { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, sortTasks } from "./task.js";
 import { Project, addTaskToProject, removeTaskFromProject } from "./project.js";
-import { populateTasks } from "./tasks-view.js";
+import { populateTasks, expandTask } from "./tasks-view.js";
 import { populateProjects } from "./projects-view.js";
 import { populateTags } from "./tags-view.js";
 
@@ -15,6 +15,7 @@ const content = document.querySelector('.content');
 const contentHeading = document.createElement('h2');
 const taskList = document.createElement('ul');
 const footer = document.querySelector('footer');
+let currentPage = '';
 
 content.appendChild(contentHeading);
 content.appendChild(taskList);
@@ -33,6 +34,7 @@ if (localStorage.getItem('save')) {
 // Display tasks
 
 populateTasks(tasks, taskList);
+currentPage = 'Tasks';
 
 // Save to local storage
 localStorage.setItem('save', JSON.stringify(tasks));
@@ -45,20 +47,36 @@ function emptyDiv(div) {
     }
 }
 
+function populate(tasks, taskList) {
+    emptyDiv(taskList);
+    if (currentPage === 'Tasks') {
+        contentHeading.innerText = 'Tasks';
+        populateTasks(tasks, taskList);
+    } else if (currentPage === 'Projects') {
+        contentHeading.innerText = 'Projects';
+        populateProjects(tasks, taskList);
+    } else if (currentPage === 'Tags') {
+        contentHeading.innerText = 'Tags';
+        populateTags(tasks, taskList)
+    }
+}
+
+// Add event listener(s) for clicking
+
 menu.addEventListener('click', (button) => {
     console.log(button.target)
     if (button.target.innerText === 'Tasks') {
-        emptyDiv(taskList);
-        contentHeading.innerText = 'Tasks';
-        populateTasks(tasks, taskList);
+        currentPage = 'Tasks';
+        sortTasks(tasks);
+        populate(tasks, taskList);
     } else if (button.target.innerText === 'Projects') {
-        emptyDiv(taskList);
-        contentHeading.innerText = 'Projects';
-        populateProjects(tasks, taskList);
+        // currentPage = 'Projects';
+        // sortTasks(tasks);
+        // populate(tasks, taskList);
     }else if (button.target.innerText === 'Tags') {
-        emptyDiv(taskList);
-        contentHeading.innerText = 'Tags';
-        populateTags(tasks, taskList);
+        // currentPage = 'Tags';
+        // sortTasks(tasks);
+        // populate(tasks, taskList);
     }
 
     if (button.target.innerText === '+') {
@@ -74,10 +92,17 @@ menu.addEventListener('click', (button) => {
     }
 })
 
-
-// Add event listener(s) for clicking
-
-
+taskList.addEventListener('click', (pointer) => {
+    if (pointer.target.classList == 'status') {
+        let targetTask = pointer.target.closest('.task')
+        toggleDone(tasks, targetTask.id);
+        populate(tasks, taskList);
+    } if (pointer.target.classList[0] == 'title') {
+        let targetTask = pointer.target.closest('.task');
+        console.log(pointer.target.closest('.task'));
+        expandTask(targetTask);
+    }
+})
 
 // Testing down here
 
@@ -105,6 +130,8 @@ tasks.push(new Task('bake bread'));
 addTaskToProject(tasks, 'bake bread', 'eat');
 toggleDone(tasks, 'bake bread');
 addTag(tasks, 'zip pants', 'personal');
+addTag(tasks, 'zip pants', 'clothing');
+addDate(tasks, 'water plants', '2025-02-26T00:00')
 
 sortTasks(tasks);
 console.log('TASK LIST SORTED');

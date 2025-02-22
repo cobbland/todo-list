@@ -50,6 +50,10 @@ A todo list webapp, built as part of The Odin Project. See the [project assignme
 - [x] Write tag functions
 - [x] Add done function (done/not done switch)
 - [x] Add due date functions
+- [x] Add eventListener and functions to populate DOM with tasks
+- [x] Make checking and unchecking tasks work
+- [x] Make expanding tasks work
+- [ ] Add adding tasks from button
 - [ ] ...
 
 ## Things I Learned
