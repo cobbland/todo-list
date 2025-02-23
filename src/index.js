@@ -6,13 +6,13 @@ import { populateProjects } from "./projects-view.js";
 import { populateTags, expandTag } from "./tags-view.js";
 
 // Assign variables
-const menu = document.querySelector('.menu');
 const content = document.querySelector('.content');
 const contentHeading = document.createElement('h2');
 const contentNotes = document.createElement('div');
 const taskList = document.createElement('ul');
 const newTaskForm = document.querySelector('#add-task-form');
 const newProjectForm = document.querySelector('#add-project-form');
+const newButton = document.querySelector('.new-all');
 let currentPage = '';
 let currentProject = '';
 let currentTag = ''; 
@@ -50,6 +50,7 @@ function populate(tasks, taskList) {
     emptyDiv(taskList);
     newProjectForm.parentElement.style.display = 'none';
     newTaskForm.parentElement.style.display = 'none';
+    newButton.style.display = "block";
     content.style.display = 'block';
     if (currentPage === 'Tasks') {
         contentHeading.innerText = 'Tasks';
@@ -60,18 +61,43 @@ function populate(tasks, taskList) {
         contentNotes.innerText = 'Your various projects';
         populateProjects(tasks, taskList);
     } else if (currentPage === 'Tags') {
+        newButton.style.display = "none";
         contentHeading.innerText = 'Tags';
         contentNotes.innerText = 'Your assorted tags';
         populateTags(tasks, taskList)
     } else if (currentPage === 'Project') {
+        newButton.style.display = "none";
         contentHeading.innerText = currentProject;
         contentNotes.innerText = tasks[getTaskIndex(tasks, currentProject)].notes;
         populateTasksInProject(tasks, taskList, currentProject);
     } else if (currentPage === "Tag") {
+        newButton.style.display = "none";
         contentHeading.innerText = currentTag;
         contentNotes.innerText = `Tasks with the ${currentTag} tag`;
         populateTasksWithTag(tasks, taskList, currentTag);
     }
+}
+
+function editTaskForm(task) {
+    newTaskForm.classList.remove('new-task-form');
+    newTaskForm.classList.add('edit-task-form');
+    const taskTitle = newTaskForm.querySelector('#task-title');
+    taskTitle.value = task.title;
+    const taskDue = newTaskForm.querySelector('#task-due');
+    taskDue.value = toString(task.due); // Doesn't show but works behind the scenes
+    const taskPriority = newTaskForm.querySelector('#task-priority');
+    taskPriority.value = task.priority;
+    const taskProject = newTaskForm.querySelector('#task-project');
+    taskProject.value = task.project;
+    if ('tasks' in task) {
+        const taskProjectTitle = newTaskForm.querySelector('.task-project-title');
+        taskProjectTitle.style.display = 'none';
+        taskProject.style.display = ' none';
+    }
+    const taskTags = newTaskForm.querySelector('#task-tags');
+    taskTags.value = task.tags.join(' ');
+    const taskNotes = newTaskForm.querySelector('#task-notes');
+    taskNotes.value = task.notes;
 }
 
 // Add event listener(s) for clicking
@@ -92,10 +118,16 @@ document.addEventListener('click', (button) => {
 
     if (button.target.classList.value === 'new-all' &&
         currentPage === 'Tasks') {
+        const taskProject = newTaskForm.querySelector('#task-project');
+        const taskProjectTitle = newTaskForm.querySelector('.task-project-title');
+        taskProjectTitle.style.display = 'block';
+        taskProject.style.display = ' block';
+        newTaskForm.classList.value = 'new-task-form';
         content.style.display = 'none';
         newProjectForm.parentElement.style.display = 'none';
         newTaskForm.parentElement.style.display = 'block';
         const projectPicker = document.querySelector('#task-project');
+        emptyDiv(projectPicker);
         const projectOptions = getProjectList(tasks);
         for (let project in projectOptions){
             const projectOption = document.createElement('option');
@@ -107,13 +139,13 @@ document.addEventListener('click', (button) => {
         content.style.display = 'none';
         newTaskForm.parentElement.style.display = 'none';
         newProjectForm.parentElement.style.display = 'block';
-        const projectPicker = document.querySelector('#project-project');
-        const projectOptions = getProjectList(tasks);
-        for (let project in projectOptions){
-            const projectOption = document.createElement('option');
-            projectOption.textContent = projectOptions[project];
-            projectPicker.appendChild(projectOption);
-        }
+        // const projectPicker = document.querySelector('#project-project');
+        // const projectOptions = getProjectList(tasks);
+        // for (let project in projectOptions){
+        //     const projectOption = document.createElement('option');
+        //     projectOption.textContent = projectOptions[project];
+        //     projectPicker.appendChild(projectOption);
+        // }
     }
 })
 
@@ -126,7 +158,10 @@ newTaskForm.addEventListener('submit', (event) => {
     let taskTags = newTaskForm['task-tags'].value;
     const taskNotes= newTaskForm['task-notes'].value;
 
-    tasks.push(new Task(taskTitle));
+    if (newTaskForm.classList.value === 'new-task-form') {
+        tasks.push(new Task(taskTitle));
+    }
+
     if (taskDue.length > 0){
         addDate(tasks, taskTitle, `${taskDue}T00:00`);
     }
@@ -136,9 +171,7 @@ newTaskForm.addEventListener('submit', (event) => {
     }
     if (taskTags.length > 0) {
         taskTags = taskTags.split(' ');
-        for (let tag in taskTags) {
-            addTag(tasks, taskTitle, taskTags[tag]);
-        }
+        modifyTask(tasks, taskTitle, 'tags', taskTags);
     }
     editNote(tasks, taskTitle, taskNotes);
 
@@ -154,7 +187,6 @@ newProjectForm.addEventListener('submit', (event) => {
     const projectTitle = newProjectForm['project-title'].value;
     const projectDue = newProjectForm['project-due'].value;
     const projectPriority = newProjectForm['project-priority'].value;
-    const projectProject = newProjectForm['project-project'].value;
     let projectTags = newProjectForm['project-tags'].value;
     const projectNotes = newProjectForm['project-notes'].value;
 
@@ -163,9 +195,6 @@ newProjectForm.addEventListener('submit', (event) => {
         addDate(tasks, projectTitle, `${projectDue}T00:00`);
     }
     modifyTask(tasks, projectTitle, 'priority', +projectPriority);
-    if (projectProject.length > 0) {
-        addTaskToProject(tasks, projectTitle, projectProject);
-    }
     if (projectTags.length > 0) {
         projectTags = projectTags.split(' ');
         for (let tag in projectTags) {
@@ -188,9 +217,26 @@ taskList.addEventListener('click', (pointer) => {
         if (pointer.target.classList[0] == 'status') {
             toggleDone(tasks, targetTask.id);
             populate(tasks, taskList);
-        } if (pointer.target.classList[0] == 'delete') {
+        } else if (pointer.target.classList[0] == 'delete') {
             deleteTask(tasks, targetTask.id);
             deleteTaskDOM(targetTask);
+        } else if (pointer.target.classList[0] == 'edit') {
+            const taskProject = newTaskForm.querySelector('#task-project');
+            const taskProjectTitle = newTaskForm.querySelector('.task-project-title');
+            taskProjectTitle.style.display = 'block';
+            taskProject.style.display = ' block';
+            content.style.display = 'none';
+            newProjectForm.parentElement.style.display = 'none';
+            newTaskForm.parentElement.style.display = 'block';
+            const projectPicker = document.querySelector('#task-project');
+            emptyDiv(projectPicker);
+            const projectOptions = getProjectList(tasks);
+            for (let project in projectOptions){
+                const projectOption = document.createElement('option');
+                projectOption.textContent = projectOptions[project];
+                projectPicker.appendChild(projectOption);
+            }
+            editTaskForm(tasks[getTaskIndex(tasks, targetTask.id)]);
         }
     }
     if (pointer.target.classList[0] == 'title') {

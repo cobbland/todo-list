@@ -58,6 +58,7 @@ A todo list webapp, built as part of The Odin Project. See the [project assignme
 - [x] Add adding project from button
 - [x] Add views by due date
 - [x] Add project views
+- [x] Add edit functionality
 - [ ] ...
 
 ## Things I Learned
