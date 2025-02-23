@@ -1,4 +1,5 @@
 import { getTaskIndex } from "./task";
+import { populateTasksFiltered, noProjects } from "./tasks-view";
 
 function populateProjects(taskList, container) {
     for (let task in taskList) {
@@ -9,26 +10,44 @@ function populateProjects(taskList, container) {
             const taskTitle = document.createElement('span');
             const taskPriority = document.createElement('span');
             const taskDue = document.createElement('span');
-            const taskStatus = document.createElement('span');
+            const taskDueExact = document.createElement('span');
             const taskProject = document.createElement('span');
             const taskTags = document.createElement('span');
+            const taskEdit = document.createElement('span');
+            const taskNotes = document.createElement('p');
+            const taskDelete = document.createElement('span');
+            const taskControls = document.createElement('div');
+            const projectTasks = document.createElement('ul');
 
             taskItem.classList.add('task');
             taskItem.id = taskList[task].title;
             taskTitle.classList.add('title');
             taskPriority.classList.add('priority');
             taskDue.classList.add('due');
-            taskStatus.classList.add('status');
+            taskDueExact.classList.add('exact-due');
             taskProject.classList.add('task-project');
             taskTags.classList.add('tags');
+            taskEdit.classList.add('edit');
+            taskNotes.classList.add('notes');
+            taskDelete.classList.add('delete');
+            taskControls.classList.add('task-controls');
+            projectTasks.classList.add('project-tasks');
+
+            taskProject.style.display = 'none';
+            taskTags.style.display = 'none';
+            taskDueExact.style.display = 'none';
+            taskNotes.style.display = 'none';
+            taskControls.style.display = 'none';
+            projectTasks.style.display = 'none';
         
             taskTitle.textContent = taskList[task].title;
+            taskEdit.textContent = '✒️';
+            taskNotes.textContent = taskList[task].notes;
+            taskDelete.textContent = '🗑️'
         
             if (taskList[task].priority === 1) {
-                taskPriority.textContent = ' 🔥';
                 taskItem.setAttribute('priority', 'high')
             } else if (taskList[task].priority === -1) {
-                taskPriority.textContent = ' 🧊';
                 taskItem.setAttribute('priority', 'low')
             } else {
                 taskPriority.textContent = ' ';
@@ -36,26 +55,30 @@ function populateProjects(taskList, container) {
             
             if (taskList[task].due === Infinity) {
                 taskDue.textContent = ' ';
+                taskDueExact.textContent = ' ';
             } else {
                 const today = new Date();
                 const oneWeek = new Date();
                 oneWeek.setDate(today.getDate() + 7);
-                if (taskList[task].due.setHours(0,0,0,0) == today.setHours(0,0,0,0)) {
-                    taskDue.textContent = 'Today'
+                if (taskList[task].due.setHours(0,0,0,0) < today.setHours(0,0,0,0)) {
+                    taskDue.textContent = 'Late!';
+                    taskDue.classList.add('late');
+                } else if (taskList[task].due.setHours(0,0,0,0) == today.setHours(0,0,0,0)) {
+                    taskDue.textContent = 'Today';
                     taskDue.classList.add('today');
                 } else if (taskList[task].due.setHours(0,0,0,0) <= oneWeek.setHours(0,0,0,0)) {
-                    taskDue.textContent = 'This week'
+                    taskDue.textContent = 'Soon';
                     taskDue.classList.add('this-week');
                 } else {
-                    taskDue.textContent = `${taskList[task].due.getFullYear()}-${taskList[task].due.getMonth()+1}-${taskList[task].due.getDate()}`
+                    taskDue.textContent = 'Later';
+                    taskDue.classList.add('later');
                 }
+                taskDueExact.textContent = `${taskList[task].due.getFullYear()}-${taskList[task].due.getMonth()+1}-${taskList[task].due.getDate()}`
             }
         
             if (taskList[task].done === true) {
-                taskStatus.textContent = '☒';
                 taskItem.setAttribute('done', 'true');
             } else {
-                taskStatus.textContent = '☐';
                 taskItem.setAttribute('done', 'false')
             }
 
@@ -64,11 +87,8 @@ function populateProjects(taskList, container) {
                 taskProject.setAttribute('project', taskList[task].project);
             }
 
-            // Confirm that the below works!!!!
             if (taskList[task].tags.length > 0) {
-                console.log(`checked for tags on: ${taskList[task].title}`);
                 for (let tag in taskList[task].tags) {
-                    console.log(`task is: ${taskList[task].tags[tag]}`)
                     const taskTag = document.createElement('li');
                     taskTag.classList.add('tag');
                     taskTag.textContent = taskList[task].tags[tag];
@@ -77,14 +97,23 @@ function populateProjects(taskList, container) {
                 }
                 
             }
+
+            if (taskList[task].tasks.length > 0) {
+                populateTasksFiltered(taskList[task].tasks, projectTasks, noProjects);
+            }
             
             container.appendChild(taskItem);
-            taskItem.appendChild(taskStatus);
             taskItem.appendChild(taskTitle);
             taskTitle.appendChild(taskPriority);
+            taskItem.appendChild(taskDue);
             taskItem.appendChild(taskProject);
             taskItem.appendChild(taskTags);
-            taskItem.appendChild(taskDue);
+            taskItem.appendChild(taskDueExact);
+            taskItem.appendChild(taskNotes);
+            taskControls.appendChild(taskEdit);
+            taskControls.appendChild(taskDelete);
+            taskItem.appendChild(taskControls);
+            taskItem.appendChild(projectTasks);
         }
     }
 }

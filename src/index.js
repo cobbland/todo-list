@@ -1,33 +1,24 @@
 import "./styles.css";
 import { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, editNote, sortTasks, addTaskToProject, removeTaskFromProject } from "./task.js";
 import { Project, getProjectList } from "./project.js";
-import { populateTasksFiltered, noProjects, justProjects, dueToday, dueSoon, dueLater, populateTasks, expandTask, deleteTaskDOM } from "./tasks-view.js";
+import { populateTasksFiltered, populateTasksInProject, noProjects, justProjects, dueToday, dueSoon, dueLater, populateTasks, expandTask, deleteTaskDOM } from "./tasks-view.js";
 import { populateProjects } from "./projects-view.js";
 import { populateTags } from "./tags-view.js";
 
 // Assign variables
 const menu = document.querySelector('.menu');
-const newTask = document.querySelector('.new-task');
-const newProject = document.querySelector('.new-project');
-const newTag = document.querySelector('.new-tag');
 const content = document.querySelector('.content');
-const contentHeadingDiv = document.createElement('div')
-const contentButton = document.createElement('button')
 const contentHeading = document.createElement('h2');
+const contentNotes = document.createElement('div');
 const taskList = document.createElement('ul');
 const newTaskForm = document.querySelector('#add-task-form');
 const newProjectForm = document.querySelector('#add-project-form');
-const hamburgerButton = document.querySelector('.hamburger');
 let currentPage = '';
+let currentProject = '';
 
-contentHeadingDiv.appendChild(contentHeading);
-contentHeadingDiv.appendChild(contentButton);
-content.appendChild(contentHeadingDiv);
+content.appendChild(contentHeading);
+content.appendChild(contentNotes);
 content.appendChild(taskList);
-
-menu.style.display = 'none';
-
-contentButton.innerText = '+';
 
 // Initialize tasks
 const tasks = [];
@@ -61,64 +52,27 @@ function populate(tasks, taskList) {
     content.style.display = 'block';
     if (currentPage === 'Tasks') {
         contentHeading.innerText = 'Tasks';
-        contentButton.classList.add('new-task');
-        contentButton.classList.remove('new-project');
+        contentNotes.innerText = "Your upcoming tasks"
         populateTasksFiltered(tasks, taskList, noProjects);
-    } else if (currentPage === "Today's Tasks") {
-        contentHeading.innerText = "Today's Tasks";
-        contentButton.classList.add('new-task');
-        contentButton.classList.remove('new-project');
-        populateTasksFiltered(tasks, taskList, dueToday);
-    } else if (currentPage === "Later This Week's Tasks") {
-        contentHeading.innerText = "Later This Week's Tasks";
-        contentButton.classList.add('new-task');
-        contentButton.classList.remove('new-project');
-        populateTasksFiltered(tasks, taskList, dueSoon);
-    } else if (currentPage === "Tasks Due Later") {
-        contentHeading.innerText = "Tasks Due Later";
-        contentButton.classList.add('new-task');
-        contentButton.classList.remove('new-project');
-        populateTasksFiltered(tasks, taskList, dueLater);
     } else if (currentPage === 'Projects') {
         contentHeading.innerText = 'Projects';
-        contentButton.classList.remove('new-task');
-        contentButton.classList.add('new-project');
-        populateTasksFiltered(tasks, taskList, justProjects);
+        contentNotes.innerText = 'Your various projects';
+        populateProjects(tasks, taskList);
     } else if (currentPage === 'Tags') {
         contentHeading.innerText = 'Tags';
+        contentNotes.innerText = '';
         populateTags(tasks, taskList)
+    } else if (currentPage === 'Project') {
+        contentHeading.innerText = currentProject;
+        contentNotes.innerText = tasks[getTaskIndex(tasks, currentProject)].notes;
+        populateTasksInProject(tasks, taskList, currentProject);
     }
 }
 
-hamburgerButton.addEventListener('click', (button) => {
-    let targetButton = button.target.closest('div')
-    if (targetButton.classList.value === 'hamburger') {
-        if (menu.style.display == 'flex') {
-            menu.style.display = 'none';
-            targetButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>'
-        } else if (menu.style.display == 'none') {
-            menu.style.display = 'flex';
-            targetButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>'
-        }
-    }
-})
-
 // Add event listener(s) for clicking
 document.addEventListener('click', (button) => {
-    if (button.target.innerText === 'All') {
+    if (button.target.innerText === 'Tasks') {
         currentPage = "Tasks";
-        sortTasks(tasks);
-        populate(tasks, taskList);
-    } else if (button.target.innerText === 'Today') {
-        currentPage = "Today's Tasks";
-        sortTasks(tasks);
-        populate(tasks, taskList);
-    } else if (button.target.innerText === 'Soon') {
-        currentPage = "Later This Week's Tasks";
-        sortTasks(tasks);
-        populate(tasks, taskList);
-    } else if (button.target.innerText === 'Later') {
-        currentPage = "Tasks Due Later";
         sortTasks(tasks);
         populate(tasks, taskList);
     } else if (button.target.innerText === 'Projects') {
@@ -131,7 +85,8 @@ document.addEventListener('click', (button) => {
         // populate(tasks, taskList);
     }
 
-    if (button.target.classList.value === 'new-task') {
+    if (button.target.classList.value === 'new-all' &&
+        currentPage === 'Tasks') {
         content.style.display = 'none';
         newProjectForm.parentElement.style.display = 'none';
         newTaskForm.parentElement.style.display = 'block';
@@ -142,7 +97,8 @@ document.addEventListener('click', (button) => {
             projectOption.textContent = projectOptions[project];
             projectPicker.appendChild(projectOption);
         }
-    } else if (button.target.classList.value === 'new-project') {
+    } else if (button.target.classList.value === 'new-all' &&
+        currentPage == 'Projects') {
         content.style.display = 'none';
         newTaskForm.parentElement.style.display = 'none';
         newProjectForm.parentElement.style.display = 'block';
@@ -221,7 +177,7 @@ newProjectForm.addEventListener('submit', (event) => {
 })
 
 taskList.addEventListener('click', (pointer) => {
-    let targetTask = pointer.target.closest('.task')
+    let targetTask = pointer.target.closest('.task');
     if (targetTask.getAttribute('deleted')) {
     } else {
         if (pointer.target.classList[0] == 'status') {
@@ -232,9 +188,14 @@ taskList.addEventListener('click', (pointer) => {
             deleteTaskDOM(targetTask);
         }
     }
-
     if (pointer.target.classList[0] == 'title') {
         expandTask(targetTask);
+    }
+    if (pointer.target.classList.value === 'task-project') {
+        currentPage = 'Project';
+        currentProject = pointer.target.getAttribute('project');
+        sortTasks(tasks);
+        populate(tasks, taskList);
     }
     localStorage.setItem('save', JSON.stringify(tasks));
 })

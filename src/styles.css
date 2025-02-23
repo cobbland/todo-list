@@ -3,6 +3,8 @@
     --color-dark: #1C1B19;
     --gray-dark: #1C1B1988;
     --gray-light: #1C1B1933;
+    --white-light: #ffffff88;
+    --white-dark: #ffffff33;
     --accent-color-1: #D76500;
     --accent-color-2: #396E67;
     --accent-color-3: #D14D41;
@@ -73,15 +75,43 @@ header .hamburger svg {
     background-color: var(--gray-light);
     padding: 1rem;
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.menu > div {
+.nav {
     display: flex;
-    flex-direction: column;
     gap: 0.2rem;
 }
+
+button {
+    cursor: pointer;
+}
+
+.nav button {
+    background: none;
+    border: none;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.new-all,
+.new-task,
+.new-project,
+.new-tag {
+    background-color: var(--gray-dark);
+    color: var(--color-light);
+    border: none;
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+}
+
+button:active,
+button:hover {
+    background-color: var(--gray-light);
+} 
 
 .content,
 #add-task,
@@ -119,14 +149,28 @@ header .hamburger svg {
     grid-column: 2 / 4;
 }
 
+.content h2 {
+    cursor: pointer;
+}
+
+.task-project,
+.tag {
+    cursor: pointer;
+}
+
+.task .task-project:hover,
+.tag:hover {
+    color: var(--accent-color-2);
+}
+
 .task[priority="high"] .title::after {
-    content: ' ⬆️';
-    color: var(--accent-color-3);
+    content: ' ↑';
+    color: var(--gray-dark);
 }
 
 .task[priority="low"] .title::after {
-    content: ' ⬇️';
-    color: var(--accent-color-2);
+    content: ' ↓';
+    color: var(--gray-dark);
 }
 
 .task .due {
@@ -186,12 +230,28 @@ header .hamburger svg {
     cursor: pointer;
 }
 
+.task .edit:hover {
+    color: var(--accent-color-2);
+}
+
+.task .delete:hover {
+    color: var(--accent-color-3);
+}
+
+.task ul {
+    grid-column: 2 / -1;
+    margin: 0.3rem;
+    padding: 0.2rem 0.6rem;
+    background-color: var(--white-light);
+    border-radius: 10px;
+}
+
 li[done="true"],
 li[deleted="true"] {
     opacity: 0.40;
 }
 
-li[deleted="true"] .title{
+li[deleted="true"] > .title{
     text-decoration: line-through;
 }
 

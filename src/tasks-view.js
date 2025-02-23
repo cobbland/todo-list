@@ -5,6 +5,13 @@ function populateTasksFiltered(taskList, container, filterFunction) {
     populateTasks(filteredTaskList, container);
 }
 
+function populateTasksInProject(taskList, container, projectName) {
+    const filteredTaskList = taskList.filter((task) => {
+        return (projectName === task.project);
+    })
+    populateTasks(filteredTaskList, container);
+}
+
 function noProjects(task) {
     return !('tasks' in task);
 }
@@ -79,9 +86,9 @@ function populateTasks(taskList, container) {
             taskControls.style.display = 'none';
         
             taskTitle.textContent = taskList[task].title;
-            taskEdit.textContent = '✒️';
+            taskEdit.textContent = '✎';
             taskNotes.textContent = taskList[task].notes;
-            taskDelete.textContent = '🗑️'
+            taskDelete.textContent = '⊗'
         
             if (taskList[task].priority === 1) {
                 taskItem.setAttribute('priority', 'high')
@@ -160,6 +167,7 @@ function expandTask(taskListItem) {
     const taskExactDue = taskListItem.querySelector('.exact-due');
     const taskNotes = taskListItem.querySelector('.notes');
     const taskControls = taskListItem.querySelector('.task-controls');
+    const projectTasks = taskListItem.querySelector('.project-tasks');
 
     if (taskProject.style.display == 'inline') {
         taskProject.style.display = 'none';
@@ -167,12 +175,18 @@ function expandTask(taskListItem) {
         taskExactDue.style.display = 'none';
         taskNotes.style.display = 'none';
         taskControls.style.display = 'none';
+        if (projectTasks != null) {
+            projectTasks.style.display = 'none';
+        }
     } else {
         taskProject.style.display = 'inline';
         taskTags.style.display = 'flex';
         taskExactDue.style.display = 'inline';
         taskNotes.style.display = 'block';
         taskControls.style.display = 'flex';
+        if (projectTasks != null) {
+            projectTasks.style.display = 'grid';
+        }
     }
 }
 
@@ -180,4 +194,4 @@ function deleteTaskDOM(taskListItem) {
     taskListItem.setAttribute('deleted', 'true');
 }
 
-export { populateTasksFiltered, noProjects, justProjects, dueToday, dueSoon, dueLater, populateTasks, expandTask, deleteTaskDOM };
+export { populateTasksFiltered, noProjects, justProjects, populateTasksInProject, dueToday, dueSoon, dueLater, populateTasks, expandTask, deleteTaskDOM };
