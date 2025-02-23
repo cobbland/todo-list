@@ -112,6 +112,15 @@ function addTaskToProject(taskList, taskTitle, projectTitle) {
     let projectIndex = taskList.indexOf(taskList.find((project) => project.title === projectTitle));
     taskList[projectIndex].tasks.unshift(taskList[taskIndex]);
     taskList[taskIndex].project = taskList[projectIndex].title;
+    if (taskList[projectIndex].tags.length > 0) {
+        for (let tag in taskList[projectIndex].tags) {
+            addTag(taskList, taskTitle, taskList[projectIndex].tags[tag]);
+        }
+    }
+    if (taskList[projectIndex].due < taskList[taskIndex].due) {
+        addDate(taskList, taskTitle, taskList[projectIndex].due, `${taskList[projectIndex].due.getFullYear()}-${taskList[projectIndex].due.getMonth()+1}-${taskList[projectIndex].due.getDate()}T00:00`);
+    }
+    // match due dates if task doesn't have one or has a later one
 }
 
 function removeTaskFromProject(taskList, taskTitle, projectTitle){

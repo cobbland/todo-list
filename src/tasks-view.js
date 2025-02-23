@@ -13,6 +13,33 @@ function justProjects(task) {
     return ('tasks' in task);
 }
 
+function dueToday(task) {
+    const tempDate = new Date();
+    const todayDate = new Date(`${tempDate.getFullYear()}-${String(tempDate.getMonth() + 1).padStart(2, '0')}-${String(tempDate.getDate()).padStart(2, '0')}T00:00`);
+    return (todayDate - task.due >= 0);
+}
+
+function dueSoon(task) {
+    const tempDate = new Date();
+    const todayDate = `${tempDate.getFullYear()}${String(tempDate.getMonth() + 1).padStart(2, '0')}${String(tempDate.getDate()).padStart(2, '0')}`;
+    let taskDate = task.date;
+    if (task.due < Infinity) {
+        taskDate = `${task.due.getFullYear()}${String(task.due.getMonth() + 1).padStart(2, '0')}${String(task.due.getDate()).padStart(2, '0')}`;
+    }
+    return (todayDate - taskDate < 0 && todayDate - taskDate >= -7);
+}
+
+function dueLater(task) {
+    const tempDate = new Date();
+    const todayDate = `${tempDate.getFullYear()}${String(tempDate.getMonth() + 1).padStart(2, '0')}${String(tempDate.getDate()).padStart(2, '0')}`;
+    let taskDate = task.date;
+    if (task.due < Infinity) {
+        taskDate = `${task.due.getFullYear()}${String(task.due.getMonth() + 1).padStart(2, '0')}${String(task.due.getDate()).padStart(2, '0')}`;
+    }
+    console.log(todayDate - taskDate);
+    return (todayDate - taskDate < -7 && todayDate - taskDate);
+}
+
 function populateTasks(taskList, container) {
     for (let task in taskList) {
         const taskIndex = getTaskIndex(taskList, taskList[task].title);
@@ -153,4 +180,4 @@ function deleteTaskDOM(taskListItem) {
     taskListItem.setAttribute('deleted', 'true');
 }
 
-export { populateTasksFiltered, noProjects, justProjects, populateTasks, expandTask, deleteTaskDOM };
+export { populateTasksFiltered, noProjects, justProjects, dueToday, dueSoon, dueLater, populateTasks, expandTask, deleteTaskDOM };

@@ -1,7 +1,7 @@
 import "./styles.css";
 import { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, editNote, sortTasks, addTaskToProject, removeTaskFromProject } from "./task.js";
 import { Project, getProjectList } from "./project.js";
-import { populateTasksFiltered, noProjects, justProjects, populateTasks, expandTask, deleteTaskDOM } from "./tasks-view.js";
+import { populateTasksFiltered, noProjects, justProjects, dueToday, dueSoon, dueLater, populateTasks, expandTask, deleteTaskDOM } from "./tasks-view.js";
 import { populateProjects } from "./projects-view.js";
 import { populateTags } from "./tags-view.js";
 
@@ -64,6 +64,21 @@ function populate(tasks, taskList) {
         contentButton.classList.add('new-task');
         contentButton.classList.remove('new-project');
         populateTasksFiltered(tasks, taskList, noProjects);
+    } else if (currentPage === "Today's Tasks") {
+        contentHeading.innerText = "Today's Tasks";
+        contentButton.classList.add('new-task');
+        contentButton.classList.remove('new-project');
+        populateTasksFiltered(tasks, taskList, dueToday);
+    } else if (currentPage === "Later This Week's Tasks") {
+        contentHeading.innerText = "Later This Week's Tasks";
+        contentButton.classList.add('new-task');
+        contentButton.classList.remove('new-project');
+        populateTasksFiltered(tasks, taskList, dueSoon);
+    } else if (currentPage === "Tasks Due Later") {
+        contentHeading.innerText = "Tasks Due Later";
+        contentButton.classList.add('new-task');
+        contentButton.classList.remove('new-project');
+        populateTasksFiltered(tasks, taskList, dueLater);
     } else if (currentPage === 'Projects') {
         contentHeading.innerText = 'Projects';
         contentButton.classList.remove('new-task');
@@ -91,7 +106,19 @@ hamburgerButton.addEventListener('click', (button) => {
 // Add event listener(s) for clicking
 document.addEventListener('click', (button) => {
     if (button.target.innerText === 'All') {
-        currentPage = 'Tasks';
+        currentPage = "Tasks";
+        sortTasks(tasks);
+        populate(tasks, taskList);
+    } else if (button.target.innerText === 'Today') {
+        currentPage = "Today's Tasks";
+        sortTasks(tasks);
+        populate(tasks, taskList);
+    } else if (button.target.innerText === 'Soon') {
+        currentPage = "Later This Week's Tasks";
+        sortTasks(tasks);
+        populate(tasks, taskList);
+    } else if (button.target.innerText === 'Later') {
+        currentPage = "Tasks Due Later";
         sortTasks(tasks);
         populate(tasks, taskList);
     } else if (button.target.innerText === 'Projects') {
@@ -168,7 +195,7 @@ newProjectForm.addEventListener('submit', (event) => {
     const projectPriority = newProjectForm['project-priority'].value;
     const projectProject = newProjectForm['project-project'].value;
     let projectTags = newProjectForm['project-tags'].value;
-    const projectNotes= newProjectForm['project-notes'].value;
+    const projectNotes = newProjectForm['project-notes'].value;
 
     tasks.push(new Project(projectTitle));
     if (projectDue.length > 0){
