@@ -1,4 +1,4 @@
-import { getTaskIndex } from "./task";
+import { getTaskIndex, sortTasks } from "./task";
 import { populateTasksFiltered, noProjects } from "./tasks-view";
 
 function populateProjects(taskList, container) {
@@ -41,9 +41,9 @@ function populateProjects(taskList, container) {
             projectTasks.style.display = 'none';
         
             taskTitle.textContent = taskList[task].title;
-            taskEdit.textContent = '✒️';
+            taskEdit.textContent = '✎';
             taskNotes.textContent = taskList[task].notes;
-            taskDelete.textContent = '🗑️'
+            taskDelete.textContent = '⊗'
         
             if (taskList[task].priority === 1) {
                 taskItem.setAttribute('priority', 'high')
@@ -99,6 +99,7 @@ function populateProjects(taskList, container) {
             }
 
             if (taskList[task].tasks.length > 0) {
+                sortTasks(taskList[task].tasks)
                 populateTasksFiltered(taskList[task].tasks, projectTasks, noProjects);
             }
             

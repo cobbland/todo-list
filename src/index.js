@@ -1,9 +1,9 @@
 import "./styles.css";
 import { Task, modifyTask, deleteTask, getTaskIndex, toggleDone, addTag, removeTag, addDate, editNote, sortTasks, addTaskToProject, removeTaskFromProject } from "./task.js";
 import { Project, getProjectList } from "./project.js";
-import { populateTasksFiltered, populateTasksInProject, noProjects, justProjects, dueToday, dueSoon, dueLater, populateTasks, expandTask, deleteTaskDOM } from "./tasks-view.js";
+import { populateTasksFiltered, populateTasksInProject, populateTasksWithTag, noProjects, justProjects, dueToday, dueSoon, dueLater, populateTasks, expandTask, deleteTaskDOM } from "./tasks-view.js";
 import { populateProjects } from "./projects-view.js";
-import { populateTags } from "./tags-view.js";
+import { populateTags, expandTag } from "./tags-view.js";
 
 // Assign variables
 const menu = document.querySelector('.menu');
@@ -15,6 +15,7 @@ const newTaskForm = document.querySelector('#add-task-form');
 const newProjectForm = document.querySelector('#add-project-form');
 let currentPage = '';
 let currentProject = '';
+let currentTag = ''; 
 
 content.appendChild(contentHeading);
 content.appendChild(contentNotes);
@@ -60,12 +61,16 @@ function populate(tasks, taskList) {
         populateProjects(tasks, taskList);
     } else if (currentPage === 'Tags') {
         contentHeading.innerText = 'Tags';
-        contentNotes.innerText = '';
+        contentNotes.innerText = 'Your assorted tags';
         populateTags(tasks, taskList)
     } else if (currentPage === 'Project') {
         contentHeading.innerText = currentProject;
         contentNotes.innerText = tasks[getTaskIndex(tasks, currentProject)].notes;
         populateTasksInProject(tasks, taskList, currentProject);
+    } else if (currentPage === "Tag") {
+        contentHeading.innerText = currentTag;
+        contentNotes.innerText = `Tasks with the ${currentTag} tag`;
+        populateTasksWithTag(tasks, taskList, currentTag);
     }
 }
 
@@ -80,9 +85,9 @@ document.addEventListener('click', (button) => {
         sortTasks(tasks);
         populate(tasks, taskList);
     }else if (button.target.innerText === 'Tags') {
-        // currentPage = 'Tags';
-        // sortTasks(tasks);
-        // populate(tasks, taskList);
+        currentPage = 'Tags';
+        sortTasks(tasks);
+        populate(tasks, taskList);
     }
 
     if (button.target.classList.value === 'new-all' &&
@@ -189,11 +194,21 @@ taskList.addEventListener('click', (pointer) => {
         }
     }
     if (pointer.target.classList[0] == 'title') {
-        expandTask(targetTask);
+        if (pointer.target.classList.value === 'title title-tag') {
+            expandTag(targetTask);
+        } else {
+            expandTask(targetTask);
+        }
     }
     if (pointer.target.classList.value === 'task-project') {
         currentPage = 'Project';
         currentProject = pointer.target.getAttribute('project');
+        sortTasks(tasks);
+        populate(tasks, taskList);
+    }
+    if (pointer.target.classList.value === 'tag') {
+        currentPage = "Tag";
+        currentTag = pointer.target.getAttribute('tags');
         sortTasks(tasks);
         populate(tasks, taskList);
     }

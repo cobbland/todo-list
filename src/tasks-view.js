@@ -12,6 +12,13 @@ function populateTasksInProject(taskList, container, projectName) {
     populateTasks(filteredTaskList, container);
 }
 
+function populateTasksWithTag(taskList, container, tagName) {
+    const filteredTaskList = taskList.filter((task) => {
+        return (task.tags.includes(tagName));
+    })
+    populateTasks(filteredTaskList, container);
+}
+
 function noProjects(task) {
     return !('tasks' in task);
 }
@@ -194,4 +201,4 @@ function deleteTaskDOM(taskListItem) {
     taskListItem.setAttribute('deleted', 'true');
 }
 
-export { populateTasksFiltered, noProjects, justProjects, populateTasksInProject, dueToday, dueSoon, dueLater, populateTasks, expandTask, deleteTaskDOM };
+export { populateTasksFiltered, noProjects, justProjects, populateTasksInProject, populateTasksWithTag, dueToday, dueSoon, dueLater, populateTasks, expandTask, deleteTaskDOM };
