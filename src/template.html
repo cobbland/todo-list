@@ -8,32 +8,32 @@
 <body>
 
     <header>
-
-        <div class="logo">todo</div>
-
+        <div class="logo"><a href="./">todo</a></div>
+        <div class="hamburger">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+        </div>
     </header>
 
     <div class="menu">
-
-        <div class="nav">
-            <button class="tasks-button">Tasks</button>
+        <div class="task-options">
+            <div class="task-options-header"><span>Tasks</span><button class="new-task">+</button></div>
+            <button class="tasks-button">All</button>
+            <button class="tasks-button-today">Today</button>
+            <button class="tasks-button-soon">Soon</button>
+            <button class="tasks-button-later">Later</button>
+        </div>
+        <div class="project-options">
+            <div class="project-options-header"><span>Projects</span><button class="new-project">+</button></div>
             <button class="projects-button">Projects</button>
+        </div>
+        <div class="tag-options">
+            <div class="tag-options-header"><span>Tags</span><button class="new-tag">+</button></div>
             <button class="tags-button">Tags</button>
         </div>
-
-        <div class="new">
-            <button class="new-task">New Task</button>
-            <button class="new-project">New Project</button>
-            <button class="new-tag">Log Tasks</button>
-            <button class="show-new">+</button>
-        </div>
-        
     </div>
 
     <div class="content">
-
     </div>
-
     <div id="add-task" style="display: none;">
         <h2>New Task</h2>
         <form action="" id="add-task-form">
@@ -109,12 +109,10 @@
     </div>
 
     <footer>
-
         <div class="copyright">
             Copyright © 2025 <a href="https://jacobdensford.com">Jacob Densford</a>
         </div>
         <a href="https://github.com/cobbland"><img src="./github-mark.svg" alt="GitHub Invertocat logo"></a>
-
     </footer>
     
 </body>

@@ -5,22 +5,29 @@ import { populateTasksFiltered, noProjects, justProjects, populateTasks, expandT
 import { populateProjects } from "./projects-view.js";
 import { populateTags } from "./tags-view.js";
 
-// Assign variables 
-const header = document.querySelector('header');
+// Assign variables
 const menu = document.querySelector('.menu');
 const newTask = document.querySelector('.new-task');
 const newProject = document.querySelector('.new-project');
 const newTag = document.querySelector('.new-tag');
 const content = document.querySelector('.content');
+const contentHeadingDiv = document.createElement('div')
+const contentButton = document.createElement('button')
 const contentHeading = document.createElement('h2');
 const taskList = document.createElement('ul');
-const footer = document.querySelector('footer');
 const newTaskForm = document.querySelector('#add-task-form');
-const newProjectForm = document.querySelector('#add-project-form')
+const newProjectForm = document.querySelector('#add-project-form');
+const hamburgerButton = document.querySelector('.hamburger');
 let currentPage = '';
 
-content.appendChild(contentHeading);
+contentHeadingDiv.appendChild(contentHeading);
+contentHeadingDiv.appendChild(contentButton);
+content.appendChild(contentHeadingDiv);
 content.appendChild(taskList);
+
+menu.style.display = 'none';
+
+contentButton.innerText = '+';
 
 // Initialize tasks
 const tasks = [];
@@ -33,12 +40,12 @@ if (localStorage.getItem('save')) {
     console.log('No local storage.');
 }
 
+// Save to local storage
+localStorage.setItem('save', JSON.stringify(tasks));
+
 // Display tasks
 currentPage = 'Tasks';
 populate(tasks, taskList);
-
-// Save to local storage
-localStorage.setItem('save', JSON.stringify(tasks));
 
 // Add content to DOM via variables and functions
 function emptyDiv(div) {
@@ -54,9 +61,13 @@ function populate(tasks, taskList) {
     content.style.display = 'block';
     if (currentPage === 'Tasks') {
         contentHeading.innerText = 'Tasks';
+        contentButton.classList.add('new-task');
+        contentButton.classList.remove('new-project');
         populateTasksFiltered(tasks, taskList, noProjects);
     } else if (currentPage === 'Projects') {
         contentHeading.innerText = 'Projects';
+        contentButton.classList.remove('new-task');
+        contentButton.classList.add('new-project');
         populateTasksFiltered(tasks, taskList, justProjects);
     } else if (currentPage === 'Tags') {
         contentHeading.innerText = 'Tags';
@@ -64,9 +75,22 @@ function populate(tasks, taskList) {
     }
 }
 
+hamburgerButton.addEventListener('click', (button) => {
+    let targetButton = button.target.closest('div')
+    if (targetButton.classList.value === 'hamburger') {
+        if (menu.style.display == 'flex') {
+            menu.style.display = 'none';
+            targetButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>'
+        } else if (menu.style.display == 'none') {
+            menu.style.display = 'flex';
+            targetButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>'
+        }
+    }
+})
+
 // Add event listener(s) for clicking
-menu.addEventListener('click', (button) => {
-    if (button.target.innerText === 'Tasks') {
+document.addEventListener('click', (button) => {
+    if (button.target.innerText === 'All') {
         currentPage = 'Tasks';
         sortTasks(tasks);
         populate(tasks, taskList);
@@ -80,19 +104,7 @@ menu.addEventListener('click', (button) => {
         // populate(tasks, taskList);
     }
 
-    if (button.target.innerText === '+') {
-        button.target.innerText = '-';
-        newTask.style.display = 'block';
-        newProject.style.display = 'block';
-        newTag.style.display = 'block';
-    } else if (button.target.innerText === '-') {
-        button.target.innerText = '+';
-        newTask.style.display = 'none';
-        newProject.style.display = 'none';
-        newTag.style.display = 'none';
-    }
-
-    if (button.target.innerText === 'New Task') {
+    if (button.target.classList.value === 'new-task') {
         content.style.display = 'none';
         newProjectForm.parentElement.style.display = 'none';
         newTaskForm.parentElement.style.display = 'block';
@@ -103,7 +115,7 @@ menu.addEventListener('click', (button) => {
             projectOption.textContent = projectOptions[project];
             projectPicker.appendChild(projectOption);
         }
-    } else if (button.target.innerText === 'New Project') {
+    } else if (button.target.classList.value === 'new-project') {
         content.style.display = 'none';
         newTaskForm.parentElement.style.display = 'none';
         newProjectForm.parentElement.style.display = 'block';
@@ -114,8 +126,6 @@ menu.addEventListener('click', (button) => {
             projectOption.textContent = projectOptions[project];
             projectPicker.appendChild(projectOption);
         }
-    } else if (button.target.innerText === 'Log Tasks') {
-        console.table(tasks);
     }
 })
 
@@ -148,6 +158,7 @@ newTaskForm.addEventListener('submit', (event) => {
     populate(tasks, taskList);
     newTaskForm.reset();
     newTaskForm.parentElement.style.display = 'none';
+    localStorage.setItem('save', JSON.stringify(tasks));
 })
 
 newProjectForm.addEventListener('submit', (event) => {
@@ -179,6 +190,7 @@ newProjectForm.addEventListener('submit', (event) => {
     populate(tasks, taskList);
     newProjectForm.reset();
     newProjectForm.parentElement.style.display = 'none';
+    localStorage.setItem('save', JSON.stringify(tasks));
 })
 
 taskList.addEventListener('click', (pointer) => {
@@ -197,6 +209,7 @@ taskList.addEventListener('click', (pointer) => {
     if (pointer.target.classList[0] == 'title') {
         expandTask(targetTask);
     }
+    localStorage.setItem('save', JSON.stringify(tasks));
 })
 
 

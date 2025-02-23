@@ -51,34 +51,36 @@ header {
     background-color: var(--color-dark);
     display: flex;
     gap: 1rem;
+    justify-content: space-between;
     align-items: center;
     padding: 1rem;
     font-size: 2em;
     font-weight: bold;
 }
 
+header a,
+header a:active,
+header a:visited {
+    color: var(--color-light);
+}
+
+header .hamburger svg {
+    cursor: pointer;
+    fill: var(--color-light);
+}
+
 .menu {
     background-color: var(--gray-light);
     padding: 1rem;
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
 }
 
-.nav {
+.menu > div {
     display: flex;
+    flex-direction: column;
     gap: 0.2rem;
-}
-
-.new {
-    display: flex;
-    gap: 0.2rem;
-}
-
-.new-task,
-.new-project,
-.new-tag {
-    display: none;
 }
 
 .content,
@@ -86,7 +88,12 @@ header {
 #add-project {
     padding: 1rem;
     width: min(1000px, 98%);
-    align-self: center;
+    margin: 0 auto;
+}
+
+.content > div {
+    display: flex;
+    justify-content: space-between;
 }
 
 .task {
