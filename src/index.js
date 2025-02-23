@@ -76,6 +76,7 @@ function populate(tasks, taskList) {
         contentNotes.innerText = `Tasks with the ${currentTag} tag`;
         populateTasksWithTag(tasks, taskList, currentTag);
     }
+    localStorage.setItem('save', JSON.stringify(tasks));
 }
 
 function editTaskForm(task) {
@@ -98,6 +99,7 @@ function editTaskForm(task) {
     taskTags.value = task.tags.join(' ');
     const taskNotes = newTaskForm.querySelector('#task-notes');
     taskNotes.value = task.notes;
+    localStorage.setItem('save', JSON.stringify(tasks));
 }
 
 // Add event listener(s) for clicking
@@ -147,6 +149,7 @@ document.addEventListener('click', (button) => {
         //     projectPicker.appendChild(projectOption);
         // }
     }
+    localStorage.setItem('save', JSON.stringify(tasks));
 })
 
 newTaskForm.addEventListener('submit', (event) => {
@@ -260,43 +263,3 @@ taskList.addEventListener('click', (pointer) => {
     }
     localStorage.setItem('save', JSON.stringify(tasks));
 })
-
-
-
-
-
-// Testing down here
-console.log('TASK LIST');
-console.table(tasks);
-
-tasks.push(new Task('clean house'));
-modifyTask(tasks, 'clean house', 'priority', 1);
-addDate(tasks, 'clean house', '2026-04-03T00:00');
-tasks.push(new Task('do laundry'));
-addDate(tasks, 'do laundry', '2025-11-11T00:00');
-modifyTask(tasks, 'do laundry', 'priority', -1);
-tasks.push(new Task('find a job'));
-tasks.push(new Task('make bed'));
-modifyTask(tasks, 'make bed', 'priority', 1);
-tasks.push(new Task('water plants'));
-addTag(tasks, 'clean house', 'personal');
-toggleDone(tasks, 'make bed');
-tasks.push(new Task('eat apple'));
-tasks.push(new Task('zip pants'));
-addDate(tasks, 'zip pants', '2025-02-22T00:00');
-tasks.push(new Project('eat'));
-addTaskToProject(tasks, 'eat apple', 'eat');
-tasks.push(new Task('bake bread'));
-addTaskToProject(tasks, 'bake bread', 'eat');
-toggleDone(tasks, 'bake bread');
-addTag(tasks, 'zip pants', 'personal');
-addTag(tasks, 'zip pants', 'clothing');
-addDate(tasks, 'water plants', '2025-02-26T00:00')
-tasks.push(new Project('Get myself together'));
-addTaskToProject(tasks, 'zip pants', 'Get myself together')
-
-editNote(tasks, 'zip pants', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore, molestiae vel consequuntur harum nobis facilis corrupti neque alias vero commodi asperiores ullam, fugit adipisci illo perferendis fuga enim voluptatem natus!');
-
-sortTasks(tasks);
-console.log('TASK LIST SORTED');
-console.table(tasks);
