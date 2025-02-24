@@ -105,27 +105,28 @@ function populateTasks(taskList, container) {
                 taskPriority.textContent = ' ';
             }
             
-            if (taskList[task].due === Infinity) {
+            if (taskList[task].due === Infinity || taskList[task].due === null) {
                 taskDue.textContent = ' ';
                 taskDueExact.textContent = ' ';
             } else {
                 const today = new Date();
                 const oneWeek = new Date();
+                const dueDate = new Date(taskList[task].due)
                 oneWeek.setDate(today.getDate() + 7);
-                if (taskList[task].due.setHours(0,0,0,0) < today.setHours(0,0,0,0)) {
+                if (dueDate.setHours(0,0,0,0) < today.setHours(0,0,0,0)) {
                     taskDue.textContent = 'Late!';
                     taskDue.classList.add('late');
-                } else if (taskList[task].due.setHours(0,0,0,0) == today.setHours(0,0,0,0)) {
+                } else if (dueDate.setHours(0,0,0,0) == today.setHours(0,0,0,0)) {
                     taskDue.textContent = 'Today';
                     taskDue.classList.add('today');
-                } else if (taskList[task].due.setHours(0,0,0,0) <= oneWeek.setHours(0,0,0,0)) {
+                } else if (dueDate.setHours(0,0,0,0) <= oneWeek.setHours(0,0,0,0)) {
                     taskDue.textContent = 'Soon';
                     taskDue.classList.add('this-week');
                 } else {
                     taskDue.textContent = 'Later';
                     taskDue.classList.add('later');
                 }
-                taskDueExact.textContent = `${taskList[task].due.getFullYear()}-${taskList[task].due.getMonth()+1}-${taskList[task].due.getDate()}`
+                taskDueExact.textContent = `${dueDate.getFullYear()}-${dueDate.getMonth()+1}-${dueDate.getDate()}`
             }
         
             if (taskList[task].done === true) {

@@ -110,6 +110,14 @@ function sortTasks(taskList) {
 function addTaskToProject(taskList, taskTitle, projectTitle) {
     let taskIndex = taskList.indexOf(taskList.find((task) => task.title === taskTitle));
     let projectIndex = taskList.indexOf(taskList.find((project) => project.title === projectTitle));
+    for (let task in taskList[projectIndex].tasks) {
+        if (taskTitle === taskList[projectIndex].tasks[task].title) {
+            const extraTaskIndex = getTaskIndex(taskList[projectIndex].tasks, taskTitle);
+            taskList[projectIndex].tasks.splice(extraTaskIndex, 1);
+        }
+    }
+
+    
     taskList[projectIndex].tasks.unshift(taskList[taskIndex]);
     taskList[taskIndex].project = taskList[projectIndex].title;
     if (taskList[projectIndex].tags.length > 0) {

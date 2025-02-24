@@ -59,6 +59,8 @@ A todo list webapp, built as part of The Odin Project. See the [project assignme
 - [x] Add views by due date
 - [x] Add project views
 - [x] Add edit functionality
+- [ ] Fix projects displaying duplicates of task after editing task
+- [ ] Fix localstorage not saving
 - [ ] ...
 
 ## Things I Learned

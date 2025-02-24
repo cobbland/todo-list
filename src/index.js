@@ -22,24 +22,33 @@ content.appendChild(contentNotes);
 content.appendChild(taskList);
 
 // Initialize tasks
-const tasks = [];
+const tasks = initializePage();
 
-// Load from local storage
-if (localStorage.getItem('save')) {
-    console.log('Loading local storage...')
-    tasks.concat(localStorage.getItem('save'));
-} else {
-    console.log('No local storage.');
-}
-
-// Save to local storage
-localStorage.setItem('save', JSON.stringify(tasks));
+// if (localStorage.getItem('save')) {
+//     console.log('Loading local storage...')
+//     tasks.concat(JSON.parse(localStorage.getItem('save')));
+// } else {
+//     console.log('No local storage.');
+// }
 
 // Display tasks
 currentPage = 'Tasks';
 populate(tasks, taskList);
 
+// Save to local storage
+localStorage.setItem('save', JSON.stringify(tasks));
+
 // Add content to DOM via variables and functions
+function initializePage() {
+    if (localStorage.getItem('save')) {
+        console.log('Loading local storage...')
+        return (JSON.parse(localStorage.getItem('save')));
+    } else {
+        console.log('No local storage.');
+        return []
+    }
+}
+
 function emptyDiv(div) {
     while (div.firstChild){
         div.firstChild.remove();
