@@ -20,11 +20,9 @@ A todo list webapp, built as part of The Odin Project. See the [project assignme
 - Projects and tasks must have titles
 - Projects and tasks can have notes
 - Projects and tasks can have due dates
-- An unset project due date equals the latest task due date
 - An unset task's due date equals the parent project's due date
-- Tasks and projects can have priorities, with the same inheritance structure as above
+- Tasks and projects can have priorities
 - Tasks and projects can be members of any number of tags, with tasks inheriting from their parent project
-- Tasks within projects are organized by tag
 - Tasks can be added to projects and tags at time of creation
 - When a task is turned into a project, it is still part of its parent project
 - Tasks created within projects are automatically part of that project (inheriting its due date and tags by default)
@@ -33,7 +31,7 @@ A todo list webapp, built as part of The Odin Project. See the [project assignme
 - Consider an export and import function
 - In all sections, sorting is prioritized: due date > priority > alphabetically
 - The menu is organized: 
-    - **Tasks** > Today > Upcoming (next 7 days) > All > Done
+    - **Tasks** > (an expandable list of all tasks)
     - **Projects** > (an expandible list of all projects)
     - **Tags** > (an expandible list of all tags)
 
@@ -62,6 +60,9 @@ A todo list webapp, built as part of The Odin Project. See the [project assignme
 - [x] Fix projects displaying duplicates of task after editing task
 - [x] Fix localstorage not saving
 - [x] Done?
+- [ ] Squash bugs?
+- [ ] Add features?
+- [ ] Refactor code?
 
-## Things I Learned
+## Project Retrospective
 

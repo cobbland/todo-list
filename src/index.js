@@ -41,8 +41,10 @@ localStorage.setItem('save', JSON.stringify(tasks));
 // Add content to DOM via variables and functions
 function initializePage() {
     if (localStorage.getItem('save')) {
-        console.log('Loading local storage...')
-        return (JSON.parse(localStorage.getItem('save')));
+        console.log('Loading local storage...');
+        const storedTasks = JSON.parse(localStorage.getItem('save'));
+        sortTasks(storedTasks);
+        return storedTasks;
     } else {
         console.log('No local storage.');
         return []
